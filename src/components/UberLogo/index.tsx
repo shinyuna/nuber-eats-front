@@ -7,6 +7,6 @@ interface ILogoProps {
 
 export const UberLogo: React.FC<ILogoProps> = ({ style }) => (
   <h1>
-    <img src={uberLogo} alt="logo image" className={style} />
+    <img src={uberLogo} alt="logo" className={style} />
   </h1>
 );
