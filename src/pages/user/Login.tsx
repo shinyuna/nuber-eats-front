@@ -6,6 +6,7 @@ import { FormError } from '../../components/FormError';
 import { LoginMutation, LoginMutationVariables } from '../../api-types/LoginMutation';
 import { UberLogo } from '../../components/UberLogo';
 import { FormButton } from '../../components/FormButton';
+import { HelmetTitle } from '../../components/Helmet';
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput: LoginInput!) {
@@ -56,7 +57,7 @@ export const Login = () => {
 
   return (
     <div className="flex justify-center w-full h-screen bg-white">
-      {' '}
+      <HelmetTitle title={'LogIn | Nuber'} />
       <div className="w-4/12 sm:w-full md:w-4/6">
         <UberLogo style={`w-48 m-auto my-16`} />
         <div className="w-full px-5 m-auto">

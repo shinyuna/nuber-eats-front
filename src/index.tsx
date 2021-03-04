@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './apollo';
 import './assets/styles/style.css';
@@ -9,7 +10,9 @@ import App from './App';
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')

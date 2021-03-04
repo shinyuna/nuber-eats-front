@@ -7,6 +7,7 @@ import { CreateAccountMutation, CreateAccountMutationVariables } from '../../api
 import { UserRole } from '../../api-types/globalTypes';
 import { UberLogo } from '../../components/UberLogo';
 import { FormButton } from '../../components/FormButton';
+import { HelmetTitle } from '../../components/Helmet';
 
 const CREATACCOUNT_MUTATION = gql`
   mutation CreateAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -58,7 +59,7 @@ export const CreateAccount = () => {
 
   return (
     <div className="flex justify-center w-full h-screen bg-white">
-      {' '}
+      <HelmetTitle title={'Create Account | Nuber'} />
       <div className="w-4/12 sm:w-full md:w-4/6">
         <UberLogo style={`w-48 m-auto my-16`} />
         <div className="w-full px-5 m-auto">
