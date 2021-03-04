@@ -7,6 +7,8 @@ import { LoginMutation, LoginMutationVariables } from '../../api-types/LoginMuta
 import { UberLogo } from '../../components/UberLogo';
 import { FormButton } from '../../components/FormButton';
 import { HelmetTitle } from '../../components/Helmet';
+import { authToken, isLoggedInVar } from '../../apollo';
+import { AUTH_TOKEN } from '../../constants';
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput: LoginInput!) {
@@ -28,10 +30,12 @@ export const Login = () => {
   const onCompleted = (data: LoginMutation) => {
     if (data.login.ok) {
       const {
-        login: { error, ok, token },
+        login: { ok, token },
       } = data;
-      if (ok) {
-        console.log(token);
+      if (ok && token) {
+        localStorage.setItem(AUTH_TOKEN, token);
+        authToken(token);
+        isLoggedInVar(true);
       }
     }
   };
