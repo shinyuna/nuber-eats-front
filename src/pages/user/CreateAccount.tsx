@@ -1,7 +1,7 @@
 import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FormError } from '../../components/FormError';
 import { CreateAccountMutation, CreateAccountMutationVariables } from '../../api-types/CreateAccountMutation';
 import { UserRole } from '../../api-types/globalTypes';
@@ -25,18 +25,24 @@ interface ICreateAccountForm {
 }
 
 export const CreateAccount = () => {
-  const { register, getValues, errors, handleSubmit, formState } = useForm<ICreateAccountForm>({ mode: 'onChange' });
+  const { register, getValues, errors, handleSubmit, formState, watch } = useForm<ICreateAccountForm>({
+    mode: 'onChange',
+    defaultValues: {
+      role: UserRole.Client,
+    },
+  });
+  const history = useHistory();
   const onCompleted = (data: CreateAccountMutation) => {
-    if (data.createAccount.ok) {
-      const {
-        createAccount: { error, ok },
-      } = data;
-      if (ok) {
-        console.log(ok);
-      }
+    const {
+      createAccount: { ok, error },
+    } = data;
+    if (ok) {
+      // redirect login page
+      alert('Account Created! Log in now!😍');
+      history.push('/login');
     }
   };
-  const [loginMutation, { loading, data: createAccountMutationResult }] = useMutation<
+  const [createAccountMutation, { loading, data: createAccountMutationResult }] = useMutation<
     CreateAccountMutation,
     CreateAccountMutationVariables
   >(CREATACCOUNT_MUTATION, {
@@ -45,7 +51,7 @@ export const CreateAccount = () => {
   const onSubmit = () => {
     const { email, password, role } = getValues();
     if (!loading) {
-      loginMutation({
+      createAccountMutation({
         variables: {
           createAccountInput: {
             email,
@@ -63,11 +69,15 @@ export const CreateAccount = () => {
       <div className="w-4/12 sm:w-full md:w-4/6">
         <UberLogo style={`w-48 m-auto my-16`} />
         <div className="w-full px-5 m-auto">
-          <h3 className="text-3xl text-gray-900">Let's Start</h3>
+          <h3 className="text-3xl text-gray-900">Let's get started</h3>
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-2 mt-4 ">
             {errors.email?.message && <FormError errMsg={errors.email?.message} />}
+            {errors.email?.type === 'pattern' && <FormError errMsg={'Please enter a valid email'} />}
             <input
-              ref={register({ required: 'Email is requierd' })}
+              ref={register({
+                required: 'Email is requierd',
+                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              })}
               name="email"
               type="email"
               placeholder="Email"
@@ -83,7 +93,17 @@ export const CreateAccount = () => {
               autoComplete="off"
               className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
             />
-            <select name="" id=""></select>
+            <select
+              ref={register({ required: true })}
+              name="role"
+              className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
+            >
+              {Object.keys(UserRole).map((role, index) => (
+                <option value={role} key={index}>
+                  {role}
+                </option>
+              ))}
+            </select>
             {createAccountMutationResult?.createAccount.error && (
               <FormError errMsg={createAccountMutationResult.createAccount.error} location="center" />
             )}
@@ -91,7 +111,7 @@ export const CreateAccount = () => {
             <p className="mt-4 text-center">
               Already use Uber?{' '}
               <Link to="/login" className="text-uber hover:underline">
-                Log In
+                Sign In
               </Link>
             </p>
           </form>
