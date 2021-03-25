@@ -4,6 +4,13 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.11",
+    "@fortawesome/fontawesome-pro": "^5.15.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-regular-svg-icons": "^5.15.2",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/pro-light-svg-icons": "^5.15.2",
+    "@fortawesome/pro-regular-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.0",
@@ -26,7 +33,7 @@
   },
   "scripts": {
     "tailwind:build": "tailwind build ./src/assets/styles/tailwind.css -o ./src/assets/styles/style.css",
-    "start": "npm run tailwind:build && react-scripts start",
+    "dev": "npm run tailwind:build && react-scripts start",
     "apollo:codegen": "rimraf src/api-types && apollo client:codegen src/api-types --target=typescript --outputFlat",
     "build": "react-scripts build",
     "test": "react-scripts test",
