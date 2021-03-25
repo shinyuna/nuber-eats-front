@@ -1,15 +1,9 @@
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-  purge: [],
+  purge: ['./src/**/*.{js, jsx, ts, tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    screens: {
-      sm: { min: '320px', max: '767px' },
-      md: { min: '768px', max: '1023px' },
-      lg: { max: '1279px' },
-      xl: { max: '1535px' },
-    },
     extend: {
       colors: {
         transparent: 'transparent',
@@ -21,6 +15,9 @@ module.exports = {
           DEFAULT: '#5fb70a',
           dark: '#3e981f',
         },
+      },
+      zIndex: {
+        '-1': '-1',
       },
     },
   },
