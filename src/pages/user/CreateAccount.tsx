@@ -39,7 +39,7 @@ export const CreateAccount = () => {
     if (ok) {
       // redirect login page
       alert('Account Created! Log in now!😍');
-      history.push('/login');
+      history.push('/');
     }
   };
   const [createAccountMutation, { loading, data: createAccountMutationResult }] = useMutation<
@@ -66,7 +66,7 @@ export const CreateAccount = () => {
   return (
     <div className="flex justify-center w-full h-screen bg-white">
       <HelmetTitle title={'Create Account | Nuber'} />
-      <div className="w-4/12 sm:w-full md:w-4/6">
+      <div className="w-full lg:w-4/12 md:w-4/6">
         <UberLogo style={`w-48 m-auto my-16`} />
         <div className="w-full px-5 m-auto">
           <h3 className="text-3xl text-gray-900">Let's get started</h3>
@@ -110,7 +110,7 @@ export const CreateAccount = () => {
             <FormButton actionText={'Sign Up'} isLoading={loading} isValid={formState.isValid} />
             <p className="mt-4 text-center">
               Already use Uber?{' '}
-              <Link to="/login" className="text-uber hover:underline">
+              <Link to="/" className="text-uber hover:underline">
                 Sign In
               </Link>
             </p>
