@@ -33,7 +33,7 @@ export const Login = () => {
         login: { ok, token },
       } = data;
       if (ok && token) {
-        localStorage.setItem(AUTH_TOKEN, token);
+        sessionStorage.setItem(AUTH_TOKEN, token);
         authToken(token);
         isLoggedInVar(true);
       }
@@ -47,6 +47,7 @@ export const Login = () => {
   );
   const onSubmit = () => {
     const { email, password } = getValues();
+
     if (!loading) {
       loginMutation({
         variables: {
@@ -58,11 +59,10 @@ export const Login = () => {
       });
     }
   };
-
   return (
     <div className="flex justify-center w-full h-screen bg-white">
       <HelmetTitle title={'LogIn | Nuber'} />
-      <div className="w-4/12 sm:w-full md:w-4/6">
+      <div className="w-full lg:w-4/12 md:w-4/6">
         <UberLogo style={`w-48 m-auto my-16`} />
         <div className="w-full px-5 m-auto">
           <h3 className="text-3xl text-gray-900">Welcome back</h3>

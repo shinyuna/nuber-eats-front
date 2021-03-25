@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache, makeVar } from '@apollo/cl
 import { setContext } from '@apollo/client/link/context';
 import { AUTH_TOKEN } from './constants';
 
-const token = localStorage.getItem(AUTH_TOKEN);
+const token = sessionStorage.getItem(AUTH_TOKEN);
 export const isLoggedInVar = makeVar(Boolean(token));
 export const authToken = makeVar(token);
 
