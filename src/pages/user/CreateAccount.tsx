@@ -7,7 +7,7 @@ import { CreateAccountMutation, CreateAccountMutationVariables } from '../../api
 import { UserRole } from '../../api-types/globalTypes';
 import { UberLogo } from '../../components/UberLogo';
 import { FormButton } from '../../components/FormButton';
-import { HelmetTitle } from '../../components/Helmet';
+import { HelmetTitle } from '../../components/HelmetTitle';
 
 const CREATACCOUNT_MUTATION = gql`
   mutation CreateAccountMutation($createAccountInput: CreateAccountInput!) {

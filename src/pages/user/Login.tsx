@@ -6,7 +6,7 @@ import { FormError } from '../../components/FormError';
 import { LoginMutation, LoginMutationVariables } from '../../api-types/LoginMutation';
 import { UberLogo } from '../../components/UberLogo';
 import { FormButton } from '../../components/FormButton';
-import { HelmetTitle } from '../../components/Helmet';
+import { HelmetTitle } from '../../components/HelmetTitle';
 import { authToken, isLoggedInVar } from '../../apollo';
 import { AUTH_TOKEN } from '../../constants';
 

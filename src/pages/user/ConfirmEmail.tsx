@@ -3,6 +3,7 @@ import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { verifyEmail, verifyEmailVariables } from '../../api-types/verifyEmail';
 import { useMe } from '../../hooks/useMe';
 import { useHistory } from 'react-router';
+import { HelmetTitle } from '../../components/HelmetTitle';
 
 const VERTIFY_EMAIL_MUTATAION = gql`
   mutation verifyEmail($input: VerifyEmailInput!) {
@@ -41,6 +42,7 @@ export const ConfirmEmail = () => {
   }, []);
   return (
     <div className="flex flex-col items-center justify-center mt-52">
+      <HelmetTitle title={'Verify Email | Nuber Eats'} />
       <h2 className="mb-2 text-xl font-medium">Confirming Email...</h2>
       <p className="text-trueGray-600">Please wait, don't close this page...</p>
     </div>

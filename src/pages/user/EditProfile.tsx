@@ -5,6 +5,7 @@ import { FormButton } from '../../components/FormButton';
 import { useMe } from '../../hooks/useMe';
 import { editProfile, editProfileVariables } from '../../api-types/editProfile';
 import { client } from '../../apollo';
+import { HelmetTitle } from '../../components/HelmetTitle';
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile($input: EditProfileInput!) {
@@ -73,6 +74,7 @@ export const EditProfile = () => {
   }, []);
   return (
     <div className="flex flex-col items-center justify-center px-5 mt-52">
+      <HelmetTitle title={'Edit Profile | Nuber Eats'} />
       <h4 className="text-2xl">Edit Profile</h4>
       <form onSubmit={handleSubmit(onSubmit)} className="grid w-full gap-2 mt-4 lg:w-4/12 md:w-4/6">
         <input
