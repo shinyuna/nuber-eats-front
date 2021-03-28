@@ -22,8 +22,8 @@ export const Header: VFC = () => {
         </div>
       )}
       <header className="w-full py-8">
-        <div className="flex w-full px-5 mx-auto pw-10 max-w-screen-2xl">
-          <button className="mr-6" onClick={onShowNav}>
+        <div className="flex w-full px-10 mx-auto pw-10">
+          <button className="mr-6 focus:outline-none" onClick={onShowNav}>
             <FontAwesomeIcon icon={faHamburger} className="text-2xl" />
           </button>
           <UberLogo style={'w-32'} />
