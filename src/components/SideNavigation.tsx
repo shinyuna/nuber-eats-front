@@ -1,5 +1,5 @@
-import React, { FC, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FC, useCallback, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { authToken, isLoggedInVar } from '../apollo';
 import { AUTH_TOKEN } from '../constants';
 
@@ -9,6 +9,10 @@ interface ISideNavProps {
 }
 
 export const SideNavigation: FC<ISideNavProps> = ({ show, onCloseNav }) => {
+  const location = useLocation();
+  useEffect(() => {
+    onCloseNav();
+  }, [location]);
   const stopPropagation = useCallback(e => {
     e.stopPropagation();
   }, []);
