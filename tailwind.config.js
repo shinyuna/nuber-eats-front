@@ -19,6 +19,9 @@ module.exports = {
       zIndex: {
         '-1': '-1',
       },
+      minWidth: {
+        'screen-large': '1024px',
+      },
     },
   },
   variants: {
