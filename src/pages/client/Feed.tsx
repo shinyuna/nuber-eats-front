@@ -5,6 +5,7 @@ import { HelmetTitle } from '../../components/HelmetTitle';
 import eventBanner from '../../assets/images/banner.png';
 import { Restaurant } from '../../components/Restaurant';
 import { Category } from '../../components/Category';
+import { useHistory } from 'react-router';
 
 const All_RESTAURANT_QUERT = gql`
   query allRestaurantQuery($input: RestaurantsInput!) {
@@ -37,8 +38,9 @@ const All_RESTAURANT_QUERT = gql`
   }
 `;
 
-export const Main = () => {
+export const Feed: React.VFC = () => {
   const [page, setPage] = useState(1);
+  const history = useHistory();
   const { data, loading, error } = useQuery<allRestaurantQuery, allRestaurantQueryVariables>(All_RESTAURANT_QUERT, {
     variables: {
       input: {
@@ -53,8 +55,31 @@ export const Main = () => {
   const onPrevPage = useCallback(() => {
     setPage(cur => cur - 1);
   }, [page]);
+  const onCategorySearch = useCallback(
+    e => {
+      let category, slug;
+      if (e.target.nodeName === 'LI') {
+        category = e.target.children[1].innerText;
+        slug = e.target.id;
+      }
+      if (e.target.nodeName === 'DIV') {
+        category = e.target.nextSibling.innerText;
+        slug = e.target.parentNode.id;
+      }
+      if (e.target.nodeName === 'P') {
+        category = e.target.innerText;
+        slug = e.target.parentNode.id;
+      }
+      history.push({
+        pathname: '/search',
+        search: `category=${category}`,
+        state: slug,
+      });
+    },
+    [history]
+  );
   return (
-    <main className="min-w-screen-large">
+    <main className="md:min-w-screen-large">
       <HelmetTitle title={'Order Food Online | Nuber Eats'} />
       <section className="flex items-center justify-between px-10 py-10 bg-gray-900 h-72">
         <div className="text-white">
@@ -70,13 +95,13 @@ export const Main = () => {
         </div>
       </section>
       <section className="py-5 mx-10 border-b">
-        <ul className="flex justify-around max-w-sm mx-auto">
+        <ul className="flex justify-around max-w-sm mx-auto" onClick={onCategorySearch}>
           {data?.allCategories.categories?.map(category => (
-            <Category key={category.id} name={category.name} coverImage={category.coverImage} />
+            <Category key={category.id} slug={category.slug} name={category.name} coverImage={category.coverImage} />
           ))}
         </ul>
       </section>
-      <section className="grid grid-cols-4 gap-5 px-10 mt-10">
+      <section className="grid gap-5 px-10 mt-10 lg:grid-cols-4 md:grid-cols-3">
         {data?.allRestaurants.result?.map(restaurant => (
           <Restaurant
             key={restaurant.id}

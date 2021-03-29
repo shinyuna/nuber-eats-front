@@ -1,22 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import { Main } from '../pages/client/Main';
+import { Feed } from '../pages/client/Feed';
 import { Header } from '../components/Header';
 import { useMe } from '../hooks/useMe';
 import { ConfirmEmail } from '../pages/user/ConfirmEmail';
 import { EditProfile } from '../pages/user/EditProfile';
+import { NotFound } from '../pages/404';
+import { Search } from '../pages/client/Search';
 
 const ClientRoutes = [
-  <Route path="/" key="main" exact>
-    <Main />
+  <Route path="/" key="feed" exact>
+    <Feed />
+  </Route>,
+  <Route path="/search" key="search" exact>
+    <Search />
   </Route>,
   <Route path="/edit-profile" key="edit-profile">
     <EditProfile />
   </Route>,
 ];
 const OwnerRoutes = [
-  <Route path="/" key="main" exact>
-    <Main />
+  <Route path="/" key="feed" exact>
+    <Feed />
   </Route>,
 ];
 
@@ -38,7 +43,9 @@ export const LoggedInRouter = () => {
         <Route path="/confirm">
           <ConfirmEmail />
         </Route>
-        <Redirect to="/" />
+        <Route>
+          <NotFound />
+        </Route>
       </Switch>
     </Router>
   );
