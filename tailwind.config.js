@@ -25,7 +25,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
   },
   plugins: [],
 };
