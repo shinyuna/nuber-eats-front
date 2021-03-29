@@ -1,13 +1,14 @@
 import React from 'react';
 
 interface ICategoriesProps {
+  slug: string;
   name: string;
   coverImage?: string | null;
 }
 
-export const Category: React.FC<ICategoriesProps> = ({ name, coverImage }) => {
+export const Category: React.FC<ICategoriesProps> = ({ slug, name, coverImage }) => {
   return (
-    <li className="flex flex-col items-center cursor-pointer group">
+    <li id={slug} className="flex flex-col items-center cursor-pointer group">
       <div
         className="w-16 h-16 bg-cover rounded-full group-hover:bg-gray-100"
         style={{ backgroundImage: `url(${coverImage})` }}

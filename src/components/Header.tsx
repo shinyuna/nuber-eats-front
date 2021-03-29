@@ -1,19 +1,20 @@
-import React, { useCallback, useState, VFC } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHamburger } from '@fortawesome/pro-regular-svg-icons';
 import { useMe } from '../hooks/useMe';
 import { UberLogo } from './UberLogo';
 import { SideNavigation } from './SideNavigation';
+import { SearchInput } from './SearchInput';
 
-export const Header: VFC = () => {
+export const Header: React.VFC = () => {
   const { data } = useMe();
   const [showNav, setShowNav] = useState(false);
   const onShowNav = useCallback(() => {
     setShowNav(prev => !prev);
-  }, [showNav]);
+  }, []);
   const onCloseNav = useCallback(() => {
     setShowNav(false);
-  }, [showNav]);
+  }, []);
   return (
     <>
       {!data?.me.verify && (
@@ -21,13 +22,14 @@ export const Header: VFC = () => {
           <p className="text-center">Please verify your email</p>
         </div>
       )}
-      <header className="w-full py-8">
-        <div className="flex w-full px-10 mx-auto pw-10">
+      <header className="flex items-center w-full px-10 py-4">
+        <div className="flex flex-1 w-full">
           <button className="mr-6 focus:outline-none" onClick={onShowNav}>
             <FontAwesomeIcon icon={faHamburger} className="text-2xl" />
           </button>
           <UberLogo style={'w-32'} />
         </div>
+        <SearchInput />
       </header>
       <SideNavigation show={showNav} onCloseNav={onCloseNav} />
     </>
