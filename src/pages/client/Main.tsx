@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { allRestaurantQuery, allRestaurantQueryVariables } from '../../api-types/allRestaurantQuery';
 import { HelmetTitle } from '../../components/HelmetTitle';
 import eventBanner from '../../assets/images/banner.png';
-import { url } from 'node:inspector';
-import { Categories } from '../../components/Categories';
+import { Restaurant } from '../../components/Restaurant';
+import { Category } from '../../components/Category';
 
 const All_RESTAURANT_QUERT = gql`
   query allRestaurantQuery($input: RestaurantsInput!) {
@@ -37,16 +37,22 @@ const All_RESTAURANT_QUERT = gql`
   }
 `;
 
-export const Restaurant = () => {
+export const Main = () => {
+  const [page, setPage] = useState(1);
   const { data, loading, error } = useQuery<allRestaurantQuery, allRestaurantQueryVariables>(All_RESTAURANT_QUERT, {
     variables: {
       input: {
-        page: 1,
-        limit: 10,
+        page: page,
+        limit: 4,
       },
     },
   });
-  console.log('🚀 ~ Restaurant ~ data', data);
+  const onNextPage = useCallback(() => {
+    setPage(cur => cur + 1);
+  }, [page]);
+  const onPrevPage = useCallback(() => {
+    setPage(cur => cur - 1);
+  }, [page]);
   return (
     <main className="min-w-screen-large">
       <HelmetTitle title={'Order Food Online | Nuber Eats'} />
@@ -64,22 +70,38 @@ export const Restaurant = () => {
         </div>
       </section>
       <section className="py-5 mx-10 border-b">
-        {data?.allCategories.categories && <Categories categories={data?.allCategories.categories} />}
+        <ul className="flex justify-around max-w-sm mx-auto">
+          {data?.allCategories.categories?.map(category => (
+            <Category key={category.id} name={category.name} coverImage={category.coverImage} />
+          ))}
+        </ul>
       </section>
-      <section className="grid grid-cols-3 gap-5 px-10 mt-10">
+      <section className="grid grid-cols-4 gap-5 px-10 mt-10">
         {data?.allRestaurants.result?.map(restaurant => (
-          <article>
-            <div
-              className="py-20 mb-2 bg-gray-200 bg-center bg-cover"
-              style={{ backgroundImage: `url(${restaurant.coverImage})` }}
-            ></div>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">{restaurant.name}</h3>
-              <p className="px-2 py-1 text-sm text-green-600 bg-green-100 rounded-full">{restaurant.category?.name}</p>
-            </div>
-          </article>
+          <Restaurant
+            key={restaurant.id}
+            id={restaurant.id}
+            name={restaurant.name}
+            coverImage={restaurant.coverImage}
+            categoryName={restaurant.category?.name}
+          />
         ))}
       </section>
+      <div className="flex justify-center mt-10">
+        {page > 1 && (
+          <button onClick={onPrevPage} className="text-xl font-medium focus:outline-none">
+            &larr;
+          </button>
+        )}
+        <span>
+          Page {page} of {data?.allRestaurants.totalPages}
+        </span>
+        {page !== data?.allRestaurants.totalPages && (
+          <button onClick={onNextPage} className="text-xl font-medium focus:outline-none">
+            &rarr;
+          </button>
+        )}
+      </div>
     </main>
   );
 };

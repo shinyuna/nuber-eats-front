@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import { Restaurant } from '../pages/client/Restaurant';
+import { Main } from '../pages/client/Main';
 import { Header } from '../components/Header';
 import { useMe } from '../hooks/useMe';
 import { ConfirmEmail } from '../pages/user/ConfirmEmail';
@@ -8,7 +8,7 @@ import { EditProfile } from '../pages/user/EditProfile';
 
 const ClientRoutes = [
   <Route path="/" key="main" exact>
-    <Restaurant />
+    <Main />
   </Route>,
   <Route path="/edit-profile" key="edit-profile">
     <EditProfile />
@@ -16,7 +16,7 @@ const ClientRoutes = [
 ];
 const OwnerRoutes = [
   <Route path="/" key="main" exact>
-    <Restaurant />
+    <Main />
   </Route>,
 ];
 
