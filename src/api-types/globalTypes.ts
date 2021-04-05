@@ -25,6 +25,13 @@ export interface CreateAccountInput {
   role: UserRole;
 }
 
+export interface CreateRestaurantInput {
+  name: string;
+  coverImage: string;
+  address: string;
+  categoryName: string;
+}
+
 export interface EditProfileInput {
   email?: string | null;
   password?: string | null;
@@ -33,6 +40,10 @@ export interface EditProfileInput {
 export interface LoginInput {
   email: string;
   password: string;
+}
+
+export interface RestaurantInput {
+  restaurantId: number;
 }
 
 export interface RestaurantsInput {
