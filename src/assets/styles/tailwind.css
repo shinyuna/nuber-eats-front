@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
+
+.input {
+  @apply p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900;
+}
+.container {
+  @apply p-5 mx-auto md:p-10;
+}
+
 @tailwind utilities;

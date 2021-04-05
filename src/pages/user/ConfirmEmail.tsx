@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { gql, useApolloClient, useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { verifyEmail, verifyEmailVariables } from '../../api-types/verifyEmail';
 import { useMe } from '../../hooks/useMe';
 import { useHistory } from 'react-router';
@@ -14,7 +14,7 @@ const VERTIFY_EMAIL_MUTATAION = gql`
   }
 `;
 
-export const ConfirmEmail = () => {
+export const ConfirmEmail: React.VFC = () => {
   const { data: userData, refetch } = useMe();
   const history = useHistory();
   const onCompleted = async (data: verifyEmail) => {

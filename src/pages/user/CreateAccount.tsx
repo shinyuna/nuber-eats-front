@@ -24,7 +24,7 @@ interface ICreateAccountForm {
   role: UserRole;
 }
 
-export const CreateAccount = () => {
+export const CreateAccount: React.VFC = () => {
   const { register, getValues, errors, handleSubmit, formState, watch } = useForm<ICreateAccountForm>({
     mode: 'onChange',
     defaultValues: {
@@ -82,7 +82,7 @@ export const CreateAccount = () => {
               type="email"
               placeholder="Email"
               autoComplete="off"
-              className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
+              className="input"
             />
             {errors.password?.message && <FormError errMsg={errors.password?.message} />}
             <input
@@ -91,13 +91,9 @@ export const CreateAccount = () => {
               type="password"
               placeholder="Password"
               autoComplete="off"
-              className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
+              className="input"
             />
-            <select
-              ref={register({ required: true })}
-              name="role"
-              className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
-            >
+            <select ref={register({ required: true })} name="role" className="input">
               {Object.keys(UserRole).map((role, index) => (
                 <option value={role} key={index}>
                   {role}

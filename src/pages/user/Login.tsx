@@ -25,7 +25,7 @@ interface ILoginForm {
   password: string;
 }
 
-export const Login = () => {
+export const Login: React.VFC = () => {
   const { register, getValues, errors, handleSubmit, formState } = useForm<ILoginForm>({ mode: 'onChange' });
   const onCompleted = (data: LoginMutation) => {
     if (data.login.ok) {
@@ -74,7 +74,7 @@ export const Login = () => {
               type="email"
               placeholder="Email"
               autoComplete="off"
-              className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
+              className="input"
             />
             {errors.password?.message && <FormError errMsg={errors.password?.message} />}
             <input
@@ -83,7 +83,7 @@ export const Login = () => {
               type="password"
               placeholder="Password"
               autoComplete="off"
-              className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
+              className="input"
             />
             {loginMutationResult?.login.error && (
               <FormError errMsg={loginMutationResult.login.error} location="center" />

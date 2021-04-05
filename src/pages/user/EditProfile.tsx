@@ -21,7 +21,7 @@ interface IFormProps {
   password?: string;
 }
 
-export const EditProfile = () => {
+export const EditProfile: React.VFC = () => {
   const { data: userData } = useMe();
   const { register, handleSubmit, getValues, formState } = useForm<IFormProps>({
     mode: 'onChange',
@@ -84,15 +84,9 @@ export const EditProfile = () => {
           name="email"
           type="email"
           placeholder="Email"
-          className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
+          className="input"
         />
-        <input
-          ref={register}
-          name="password"
-          type="password"
-          placeholder="Password"
-          className="p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900"
-        />
+        <input ref={register} name="password" type="password" placeholder="Password" className="input" />
         <FormButton actionText={'Update Profile'} isValid={formState.isValid} isLoading={loading} />
       </form>
     </div>

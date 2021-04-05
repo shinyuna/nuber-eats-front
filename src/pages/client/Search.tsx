@@ -43,7 +43,7 @@ const SEARCH_CATEGORY_RESTAURANT_QUERY = gql`
   ${RESTAURANT_FRAGMENT}
 `;
 
-export const Search = () => {
+export const Search: React.VFC = () => {
   const location = useLocation();
   const history = useHistory();
   const [type, searchContent] = location.search.split('=');
