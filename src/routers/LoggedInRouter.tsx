@@ -8,8 +8,10 @@ import { EditProfile } from '../pages/user/EditProfile';
 import { NotFound } from '../pages/404';
 import { Search } from '../pages/client/Search';
 import { RestaurantDetail } from '../pages/client/RestaurantDetail';
-import { MyRestaurant } from '../pages/owner/MyRestaurant';
+import { MyRestaurants } from '../pages/owner/MyRestaurants';
 import { AddRestaurant } from '../pages/owner/AddRestaurant';
+import { MyRestaurant } from '../pages/owner/MyRestaurant';
+import { AddDish } from '../pages/owner/AddDish';
 
 const commonRoutes = [
   { path: '/edit-profile', component: <EditProfile /> },
@@ -21,8 +23,10 @@ const clientRoutes = [
   { path: '/restaurant/:id', component: <RestaurantDetail /> },
 ];
 const ownerRoutes = [
-  { path: '/', component: <MyRestaurant /> },
+  { path: '/', component: <MyRestaurants /> },
   { path: '/add-restaurant', component: <AddRestaurant /> },
+  { path: '/restaurant/:id', component: <MyRestaurant /> },
+  { path: '/restaurant/:restaurantId/add-dish', component: <AddDish /> },
 ];
 
 export const LoggedInRouter = () => {
