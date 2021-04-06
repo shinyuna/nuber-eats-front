@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { allRestaurantQuery, allRestaurantQueryVariables } from '../../api-types/allRestaurantQuery';
+import { getRestaurantsQuery, getRestaurantsQueryVariables } from '../../api-types/getRestaurantsQuery';
 import { HelmetTitle } from '../../components/HelmetTitle';
 import eventBanner from '../../assets/images/banner.png';
 import { Restaurant } from '../../components/Restaurant';
 import { Category } from '../../components/Category';
 import { useHistory } from 'react-router';
 
-const All_RESTAURANT_QUERT = gql`
-  query allRestaurantQuery($input: RestaurantsInput!) {
-    allCategories {
+const GET_RESTAURANTS_QUERT = gql`
+  query getRestaurantsQuery($input: GetRestaurantsInput!) {
+    getCategories {
       ok
       error
       categories {
@@ -20,7 +20,7 @@ const All_RESTAURANT_QUERT = gql`
         restaurantCount
       }
     }
-    allRestaurants(input: $input) {
+    getRestaurants(input: $input) {
       ok
       error
       totalPages
@@ -41,7 +41,7 @@ const All_RESTAURANT_QUERT = gql`
 export const Feed: React.VFC = () => {
   const [page, setPage] = useState(1);
   const history = useHistory();
-  const { data, loading, error } = useQuery<allRestaurantQuery, allRestaurantQueryVariables>(All_RESTAURANT_QUERT, {
+  const { data, loading, error } = useQuery<getRestaurantsQuery, getRestaurantsQueryVariables>(GET_RESTAURANTS_QUERT, {
     variables: {
       input: {
         page: page,
@@ -79,30 +79,30 @@ export const Feed: React.VFC = () => {
     [history]
   );
   return (
-    <main className="md:min-w-screen-large">
+    <main className="min-w-screen-large">
       <HelmetTitle title={'Order Food Online | Nuber Eats'} />
-      <section className="flex items-center justify-between px-10 py-10 bg-gray-900 h-72">
-        <div className="text-white">
+      <section className="flex items-center justify-between px-10 py-6 bg-gray-900">
+        <div className="w-1/3 text-white">
           <h1 className="mb-2 text-4xl">Crave it? Get it.</h1>
           <p className="font-extralight">Search for a favorite restaurant, cuisine, or dish.</p>
         </div>
-        <div className="flex w-1/3 h-full">
-          <div className="flex flex-col justify-between w-6/12 p-5 bg-yellow-400">
+        <div className="flex w-1/3">
+          <div className="flex flex-col justify-between w-3/5 p-5 bg-yellow-400">
             <p className="text-xl font-semibold break-words">Unlimited $0 delivery fee + 5% off with Eats Pass</p>
             <button className="px-4 py-2 text-sm text-white bg-gray-900 rounded-full">Try 1 month free →</button>
           </div>
-          <img className="h-full" src={eventBanner} alt="event banner" />
+          <img className="w-2/5" src={eventBanner} alt="event banner" />
         </div>
       </section>
       <section className="py-5 mx-10 border-b">
         <ul className="flex justify-around max-w-sm mx-auto" onClick={onCategorySearch}>
-          {data?.allCategories.categories?.map(category => (
+          {data?.getCategories.categories?.map(category => (
             <Category key={category.id} slug={category.slug} name={category.name} coverImage={category.coverImage} />
           ))}
         </ul>
       </section>
-      <section className="grid gap-5 px-10 mt-10 lg:grid-cols-4 md:grid-cols-3">
-        {data?.allRestaurants.result?.map(restaurant => (
+      <section className="grid grid-cols-4 gap-5 px-10 mt-10">
+        {data?.getRestaurants.result?.map(restaurant => (
           <Restaurant
             key={restaurant.id}
             id={restaurant.id}
@@ -119,9 +119,9 @@ export const Feed: React.VFC = () => {
           </button>
         )}
         <span>
-          Page {page} of {data?.allRestaurants.totalPages}
+          Page {page} of {data?.getRestaurants.totalPages}
         </span>
-        {page !== data?.allRestaurants.totalPages && (
+        {page !== data?.getRestaurants.totalPages && (
           <button onClick={onNextPage} className="text-xl font-medium focus:outline-none">
             &rarr;
           </button>

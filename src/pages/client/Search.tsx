@@ -1,18 +1,15 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router';
-import {
-  searchRestaurantByCategory,
-  searchRestaurantByCategoryVariables,
-} from '../../api-types/searchRestaurantByCategory';
-import { searchRestaurantByName, searchRestaurantByNameVariables } from '../../api-types/searchRestaurantByName';
+import { findRestaurantByCategory, findRestaurantByCategoryVariables } from '../../api-types/findRestaurantByCategory';
+import { findRestaurantByName, findRestaurantByNameVariables } from '../../api-types/findRestaurantByName';
 import { HelmetTitle } from '../../components/HelmetTitle';
 import { Restaurant } from '../../components/Restaurant';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
 
-const SEARCH_NAME_RESTAURANT_QUERY = gql`
-  query searchRestaurantByName($input: SearchRestaurantInput!) {
-    searchRestaurantByName(input: $input) {
+const FIND_NAME_RESTAURANT_QUERY = gql`
+  query findRestaurantByName($input: FindRestaurantInput!) {
+    findRestaurantByName(input: $input) {
       ok
       error
       totalPages
@@ -25,9 +22,9 @@ const SEARCH_NAME_RESTAURANT_QUERY = gql`
   ${RESTAURANT_FRAGMENT}
 `;
 
-const SEARCH_CATEGORY_RESTAURANT_QUERY = gql`
-  query searchRestaurantByCategory($input: CategoryBySlugInput!) {
-    searchRestaurantByCategory(input: $input) {
+const FIND_CATEGORY_RESTAURANT_QUERY = gql`
+  query findRestaurantByCategory($input: FindRestaurantByCategoryInput!) {
+    findRestaurantByCategory(input: $input) {
       ok
       error
       totalPages
@@ -48,14 +45,14 @@ export const Search: React.VFC = () => {
   const history = useHistory();
   const [type, searchContent] = location.search.split('=');
   const [callSearchNameQuery, { loading: nameLoading, data: nameData }] = useLazyQuery<
-    searchRestaurantByName,
-    searchRestaurantByNameVariables
-  >(SEARCH_NAME_RESTAURANT_QUERY);
+    findRestaurantByName,
+    findRestaurantByNameVariables
+  >(FIND_NAME_RESTAURANT_QUERY);
   const [callSearchCategoryQuery, { loading: categoryLoading, data: categoryData }] = useLazyQuery<
-    searchRestaurantByCategory,
-    searchRestaurantByCategoryVariables
-  >(SEARCH_CATEGORY_RESTAURANT_QUERY);
-  const data = nameData?.searchRestaurantByName || categoryData?.searchRestaurantByCategory;
+    findRestaurantByCategory,
+    findRestaurantByCategoryVariables
+  >(FIND_CATEGORY_RESTAURANT_QUERY);
+  const data = nameData?.findRestaurantByName || categoryData?.findRestaurantByCategory;
   console.log('🚀 ~ Search ~ data', data);
 
   useEffect(() => {

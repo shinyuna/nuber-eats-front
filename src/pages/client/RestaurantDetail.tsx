@@ -1,12 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import { useParams } from 'react-router';
-import { findRestaurantById, findRestaurantByIdVariables } from '../../api-types/findRestaurantById';
+import { getRestaurant, getRestaurantVariables } from '../../api-types/getRestaurant';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
 
 const RESTAURANT_QUERY = gql`
-  query findRestaurantById($input: RestaurantInput!) {
-    findRestaurantById(input: $input) {
+  query getRestaurant($input: RestaurantInput!) {
+    getRestaurant(input: $input) {
       ok
       error
       restaurant {
@@ -23,7 +23,7 @@ interface IRestaurantParams {
 
 export const RestaurantDetail = () => {
   const params = useParams<IRestaurantParams>();
-  const { loading, data } = useQuery<findRestaurantById, findRestaurantByIdVariables>(RESTAURANT_QUERY, {
+  const { loading, data } = useQuery<getRestaurant, getRestaurantVariables>(RESTAURANT_QUERY, {
     variables: {
       input: {
         restaurantId: +params.id,
@@ -35,7 +35,7 @@ export const RestaurantDetail = () => {
       <div
         className="relative bg-gray-200 bg-center bg-cover py-36 "
         style={{
-          backgroundImage: `url(${data?.findRestaurantById.restaurant?.coverImage})`,
+          backgroundImage: `url(${data?.getRestaurant.restaurant?.coverImage})`,
         }}
       >
         <div
@@ -44,10 +44,10 @@ export const RestaurantDetail = () => {
         >
           <div className="px-10 py-6 text-white">
             <div>
-              <h4 className="mb-3 text-3xl font-semibold">{data?.findRestaurantById.restaurant?.name}</h4>
-              <h5 className="mb-1 text-sm">{data?.findRestaurantById.restaurant?.category?.name}</h5>
+              <h4 className="page-h4">{data?.getRestaurant.restaurant?.name}</h4>
+              <h5 className="mb-1 text-sm">{data?.getRestaurant.restaurant?.category?.name}</h5>
               <p className="text-sm">
-                {data?.findRestaurantById.restaurant?.address} •{' '}
+                {data?.getRestaurant.restaurant?.address} •{' '}
                 <button className="font-medium underline focus:outline-none">More info</button>
               </p>
             </div>
