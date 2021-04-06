@@ -6,35 +6,35 @@
 import { RestaurantInput } from "./globalTypes";
 
 // ====================================================
-// GraphQL query operation: findRestaurantById
+// GraphQL query operation: getRestaurant
 // ====================================================
 
-export interface findRestaurantById_findRestaurantById_restaurant_category {
+export interface getRestaurant_getRestaurant_restaurant_category {
   __typename: "Category";
   name: string;
 }
 
-export interface findRestaurantById_findRestaurantById_restaurant {
+export interface getRestaurant_getRestaurant_restaurant {
   __typename: "Restaurant";
   id: number;
   name: string;
   coverImage: string;
   address: string;
   isPromoted: boolean;
-  category: findRestaurantById_findRestaurantById_restaurant_category | null;
+  category: getRestaurant_getRestaurant_restaurant_category | null;
 }
 
-export interface findRestaurantById_findRestaurantById {
+export interface getRestaurant_getRestaurant {
   __typename: "RestaurantOutput";
   ok: boolean;
   error: string | null;
-  restaurant: findRestaurantById_findRestaurantById_restaurant | null;
+  restaurant: getRestaurant_getRestaurant_restaurant | null;
 }
 
-export interface findRestaurantById {
-  findRestaurantById: findRestaurantById_findRestaurantById;
+export interface getRestaurant {
+  getRestaurant: getRestaurant_getRestaurant;
 }
 
-export interface findRestaurantByIdVariables {
+export interface getRestaurantVariables {
   input: RestaurantInput;
 }
