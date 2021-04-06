@@ -1,6 +1,7 @@
+import { DefaultOptions, useApolloClient } from '@apollo/client';
 import React, { FC, useCallback, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { authToken, isLoggedInVar } from '../apollo';
+import { authToken, client, isLoggedInVar } from '../apollo';
 import { AUTH_TOKEN } from '../constants';
 
 interface ISideNavProps {
@@ -20,6 +21,7 @@ export const SideNavigation: FC<ISideNavProps> = ({ show, onCloseNav }) => {
     sessionStorage.removeItem(AUTH_TOKEN);
     authToken(null);
     isLoggedInVar(false);
+    client.clearStore();
   }, [authToken, isLoggedInVar]);
   return (
     <div
