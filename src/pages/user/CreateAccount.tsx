@@ -67,7 +67,7 @@ export const CreateAccount: React.VFC = () => {
     <div className="flex justify-center w-full h-screen bg-white">
       <HelmetTitle title={'Create Account | Nuber'} />
       <div className="w-full lg:w-4/12 md:w-4/6">
-        <UberLogo style={`w-48 m-auto my-16`} />
+        <UberLogo logoSize="w-48 m-auto my-16" />
         <div className="w-full px-5 m-auto">
           <h3 className="text-3xl text-gray-900">Let's get started</h3>
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-2 mt-4 ">
