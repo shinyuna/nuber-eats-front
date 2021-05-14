@@ -1,6 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
 import { getRestaurantsByOwner } from '../../api-types/getRestaurantsByOwner';
 import { HelmetTitle } from '../../components/HelmetTitle';
 import { NoData } from '../../components/NoData';

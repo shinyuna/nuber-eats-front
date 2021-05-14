@@ -34,7 +34,7 @@ export const AddDish = () => {
   const [createDish, { data }] = useMutation<createDish, createDishVariables>(CREATE_DISH_MUTATION, {
     refetchQueries: [{ query: MY_RESTAURANT_QUERY, variables: { input: { id: +restaurantId } } }],
   });
-  const { register, handleSubmit, formState, getValues } = useForm({
+  const { register, handleSubmit, formState, getValues } = useForm<IForm>({
     mode: 'onChange',
   });
   const onSubmit = useCallback(() => {
