@@ -27,11 +27,11 @@ export const Header: React.VFC = () => {
           <button className="mr-6 focus:outline-none" onClick={onShowNav}>
             <FontAwesomeIcon icon={faHamburger} className="text-2xl" />
           </button>
-          <UberLogo style={'w-28 md:w-32'} />
+          <UberLogo logoSize="w-28 md:w-32" />
         </div>
         <SearchInput />
       </header>
-      <SideNavigation show={showNav} onCloseNav={onCloseNav} />
+      <SideNavigation show={showNav} user={data?.me.email} onCloseNav={onCloseNav} />
     </>
   );
 };
