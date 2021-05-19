@@ -135,7 +135,7 @@ export const AddRestaurant: React.VFC = () => {
           })}
           placeholder="Restaurant Category"
         />
-        <div className="grid w-full grid-cols-3 p-0 input">
+        <div className="grid w-full grid-cols-4 p-0">
           <input
             id="cover_image"
             className="hidden"
@@ -148,14 +148,14 @@ export const AddRestaurant: React.VFC = () => {
           />
           <input
             readOnly
-            className="col-start-1 col-end-3 px-4 focus:outline-none"
+            className="col-start-1 col-end-4 px-4 focus:outline-none"
             type="text"
             name="fileName"
             ref={register()}
             placeholder="Restaurant Cover Image"
           />
           <label className="text-sm button bg-lime-500" htmlFor="cover_image">
-            Upload Image File
+            Upload File
           </label>
         </div>
         <FormButton actionText={'Create Restaurant'} isLoading={uploading} isValid={formState.isValid} />
