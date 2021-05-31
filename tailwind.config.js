@@ -22,6 +22,11 @@ module.exports = {
       minWidth: {
         'screen-large': '1024px',
       },
+      screens: {
+        sm: { min: '320px', max: '480px' },
+        md: { min: '481px', max: '768px' },
+        lg: { min: '769px' },
+      },
     },
   },
   variants: {
