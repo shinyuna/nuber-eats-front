@@ -27,7 +27,7 @@ export const Header: React.VFC = () => {
           <button className="mr-6 focus:outline-none" onClick={onShowNav}>
             <FontAwesomeIcon icon={faHamburger} className="text-2xl" />
           </button>
-          <UberLogo logoSize="hidden md:block w-28 md:w-32" />
+          <UberLogo logoSize="w-32 sm:hidden" />
         </div>
         <SearchInput />
       </header>

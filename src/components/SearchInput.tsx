@@ -30,7 +30,7 @@ export const SearchInput: React.VFC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSearchSubmit)}
-      className="flex w-11/12 p-4 transition-all duration-300 ease-in-out bg-gray-100 border-b-2 md:w-3/5 focus-within:border-black"
+      className="flex w-3/5 p-4 transition-all duration-300 ease-in-out bg-gray-100 border-b-2 sm:w-11/12 focus-within:border-black"
     >
       <span>
         <FontAwesomeIcon icon={faSearch} className="mr-4 text-lg" />

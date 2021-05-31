@@ -135,7 +135,7 @@ export const AddRestaurant: React.VFC = () => {
           })}
           placeholder="Restaurant Category"
         />
-        <div className="grid w-full grid-cols-4 p-0">
+        <div className="grid w-full grid-cols-4">
           <input
             id="cover_image"
             className="hidden"
@@ -148,7 +148,7 @@ export const AddRestaurant: React.VFC = () => {
           />
           <input
             readOnly
-            className="col-start-1 col-end-4 px-4 focus:outline-none"
+            className="col-start-1 col-end-4 px-4 focus:outline-none input"
             type="text"
             name="fileName"
             ref={register()}

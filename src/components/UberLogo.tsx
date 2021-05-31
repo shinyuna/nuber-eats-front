@@ -6,10 +6,10 @@ interface ILogoProps {
   logoSize?: string;
 }
 
-export const UberLogo: React.FC<ILogoProps> = ({ logoSize = 'w-36' }) => (
+export const UberLogo: React.FC<ILogoProps> = ({ logoSize = 'w-32' }) => (
   <h1>
-    <Link to="/">
-      <img src={uberLogo} alt="Uber eats logo" className={logoSize} />
+    <Link to="/" className="block">
+      <img src={uberLogo} alt="Uber eats logo" className={`h-full ${logoSize}`} />
     </Link>
   </h1>
 );
