@@ -23,9 +23,9 @@ module.exports = {
         'screen-large': '1024px',
       },
       screens: {
-        sm: { min: '320px', max: '480px' },
-        md: { min: '481px', max: '768px' },
-        lg: { min: '769px' },
+        sm: { min: '320px', max: '768px' },
+        md: { min: '769px', max: '1020px' },
+        lg: { min: '1021px' },
       },
     },
   },
