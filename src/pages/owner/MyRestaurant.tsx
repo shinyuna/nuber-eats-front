@@ -47,7 +47,7 @@ export const MyRestaurant = () => {
           className="absolute bottom-0 left-0 flex items-end w-full h-1/2"
           style={{ background: `linear-gradient(0deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0) 100%)` }}
         >
-          <div className="px-10 py-6 text-white">
+          <div className="px-10 py-6 text-white sm:px-5">
             <div>
               <h4 className="page-h4">{data?.getRestaurantByOwner.restaurant?.name}</h4>
               <h5 className="mb-1 text-sm">{data?.getRestaurantByOwner.restaurant?.category?.name}</h5>
@@ -59,20 +59,32 @@ export const MyRestaurant = () => {
           </div>
         </div>
       </div>
-      <div className="px-5 md:px-10">
-        <div className="py-10">
-          <Link to={`/restaurant/${id}/add-dish`} className="mr-5 bg-gray-800 rounded-full button">
+      <div className="px-10 sm:px-5">
+        <div className="py-8">
+          <Link to={`/restaurant/${id}/add-dish`} className="inline-block mr-4 bg-gray-800 rounded-full button">
             Add Dish &rarr;
           </Link>
           <button className="rounded-full button">Buy Promotion &rarr;</button>
         </div>
-        <h4 className="mb-5 text-2xl">{data?.getRestaurantByOwner.restaurant?.name} Menu</h4>
+        <h4 className="mb-5 text-xl">{data?.getRestaurantByOwner.restaurant?.name} Menu</h4>
         <div>
-          {data?.getRestaurantByOwner.restaurant?.menu.length === 0 ? (
+          {data?.getRestaurantByOwner.restaurant?.menu.length === 0 && (
             <NoData emoji={'🍽'} title={'You have no menu.'} sub={'Try adding a menu.'} />
-          ) : (
-            ''
           )}
+          <div className="grid grid-cols-3 gap-10 sm:grid-cols-1 md:grid-cols-2">
+            {!loading &&
+              data?.getRestaurantByOwner.restaurant?.menu.map(menu => (
+                <div className="flex">
+                  <div className="flex flex-col justify-between flex-1 p-6 border border-gray-200">
+                    <p className="text-lg font-medium tracking-wide">{menu.name}</p>
+                    <p>{menu.price} &#8361;</p>
+                  </div>
+                  <div className="flex-1 flex-shrink h-40">
+                    <img className="object-cover w-full h-full" src={menu.photo} alt={menu.name} />
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </main>
