@@ -79,7 +79,7 @@ export const MyRestaurant = () => {
                     <p className="text-lg font-medium tracking-wide">{menu.name}</p>
                     <p>{menu.price} &#8361;</p>
                   </div>
-                  <div className="flex-1 flex-shrink h-40">
+                  <div className="flex-1 flex-shrink h-40 bg-gray-200">
                     <img className="object-cover w-full h-full" src={menu.photo} alt={menu.name} />
                   </div>
                 </div>

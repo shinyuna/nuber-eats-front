@@ -19,13 +19,9 @@ module.exports = {
       zIndex: {
         '-1': '-1',
       },
-      minWidth: {
-        'screen-large': '1024px',
-      },
       screens: {
-        sm: { min: '320px', max: '768px' },
-        md: { min: '769px', max: '1020px' },
-        lg: { min: '1021px' },
+        sm: { min: '320px', max: '767px' },
+        md: { min: '768px', max: '1023px' },
       },
     },
   },

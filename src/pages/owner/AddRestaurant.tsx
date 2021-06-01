@@ -104,9 +104,9 @@ export const AddRestaurant: React.VFC = () => {
     }
   }, [uploading]);
   return (
-    <main className="px-5 md:px-10">
+    <main className="px-10 sm:px-5">
       <HelmetTitle title={'Create Restaurant | Nuber Eats'} />
-      <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-screen-sm gap-3 mx-auto mt-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-3xl gap-3 mx-auto mt-10">
         <h1 className="my-5 text-3xl font-semibold">Add Your Restaurant</h1>
         <input
           className="input"
@@ -155,7 +155,7 @@ export const AddRestaurant: React.VFC = () => {
             placeholder="Restaurant Cover Image"
           />
           <label className="text-sm button bg-lime-500" htmlFor="cover_image">
-            Upload File
+            Upload
           </label>
         </div>
         <FormButton actionText={'Create Restaurant'} isLoading={uploading} isValid={formState.isValid} />
