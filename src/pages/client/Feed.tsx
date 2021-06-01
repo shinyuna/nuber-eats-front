@@ -70,11 +70,12 @@ export const Feed: React.VFC = () => {
         category = e.target.innerText;
         slug = e.target.parentNode.id;
       }
-      history.push({
-        pathname: '/search',
-        search: `category=${category}`,
-        state: slug,
-      });
+      category &&
+        history.push({
+          pathname: '/search',
+          search: `category=${category}`,
+          state: slug,
+        });
     },
     [history]
   );
@@ -95,7 +96,7 @@ export const Feed: React.VFC = () => {
         </div>
       </section>
       <section className="py-5 mx-10 border-b">
-        <ul className="flex justify-around max-w-sm mx-auto" onClick={onCategorySearch}>
+        <ul className="flex justify-around max-w-xl mx-auto" onClick={onCategorySearch}>
           {data?.getCategories.categories?.map(category => (
             <Category key={category.id} slug={category.slug} name={category.name} coverImage={category.coverImage} />
           ))}
