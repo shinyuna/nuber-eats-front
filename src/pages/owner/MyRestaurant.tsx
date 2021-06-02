@@ -1,10 +1,12 @@
 import React from 'react';
+
 import { gql, useQuery } from '@apollo/client';
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { getRestaurantByOwner, getRestaurantByOwnerVariables } from '../../api-types/getRestaurantByOwner';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import { NoData } from '../../components/NoData';
-import { Link } from 'react-router-dom';
+import { Menu } from '../../components/Menu';
 
 export const MY_RESTAURANT_QUERY = gql`
   query getRestaurantByOwner($input: RestaurantInput!) {
@@ -74,15 +76,13 @@ export const MyRestaurant = () => {
           <div className="grid grid-cols-3 gap-10 sm:grid-cols-1 md:grid-cols-2">
             {!loading &&
               data?.getRestaurantByOwner.restaurant?.menu.map(menu => (
-                <div className="flex">
-                  <div className="flex flex-col justify-between flex-1 p-6 border border-gray-200">
-                    <p className="text-lg font-medium tracking-wide">{menu.name}</p>
-                    <p>{menu.price} &#8361;</p>
-                  </div>
-                  <div className="flex-1 flex-shrink h-40 bg-gray-200">
-                    <img className="object-cover w-full h-full" src={menu.photo} alt={menu.name} />
-                  </div>
-                </div>
+                <Menu
+                  key={menu.name}
+                  name={menu.name}
+                  description={menu.description}
+                  price={menu.price}
+                  photo={menu.photo}
+                />
               ))}
           </div>
         </div>
