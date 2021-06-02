@@ -22,7 +22,7 @@ export const Header: React.VFC = () => {
           <p className="text-center">Please verify your email</p>
         </div>
       )}
-      <header className="flex items-center w-full px-5 py-4 md:px-10">
+      <header className="flex items-center w-full px-10 py-4 sm:px-5">
         <div className="flex flex-1 w-full">
           <button className="mr-6 focus:outline-none" onClick={onShowNav}>
             <FontAwesomeIcon icon={faHamburger} className="text-2xl" />
