@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
@@ -37,6 +37,8 @@ export const MyRestaurant = () => {
       },
     },
   });
+  useEffect(() => {}, [data, loading]);
+
   return (
     <main>
       <div
