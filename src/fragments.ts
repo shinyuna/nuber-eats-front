@@ -41,6 +41,10 @@ export const DISH_FRAGMENT = gql`
   }
 `;
 
-// export const MENU_FRAGMENT = gql`
-//   fragment MenuParts on Menu {}
-// `;
+export const ORDERS_FRAGMENT = gql`
+  fragment OrderParts on Order {
+    id
+    createdAt
+    total
+  }
+`;

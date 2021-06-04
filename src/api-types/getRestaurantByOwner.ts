@@ -37,6 +37,13 @@ export interface getRestaurantByOwner_getRestaurantByOwner_restaurant_menu {
   options: getRestaurantByOwner_getRestaurantByOwner_restaurant_menu_options[] | null;
 }
 
+export interface getRestaurantByOwner_getRestaurantByOwner_restaurant_orders {
+  __typename: "Order";
+  id: number;
+  createdAt: any;
+  total: number | null;
+}
+
 export interface getRestaurantByOwner_getRestaurantByOwner_restaurant {
   __typename: "Restaurant";
   id: number;
@@ -46,6 +53,7 @@ export interface getRestaurantByOwner_getRestaurantByOwner_restaurant {
   isPromoted: boolean;
   category: getRestaurantByOwner_getRestaurantByOwner_restaurant_category | null;
   menu: getRestaurantByOwner_getRestaurantByOwner_restaurant_menu[];
+  orders: getRestaurantByOwner_getRestaurantByOwner_restaurant_orders[];
 }
 
 export interface getRestaurantByOwner_getRestaurantByOwner {
