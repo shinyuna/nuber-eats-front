@@ -11,22 +11,32 @@ interface IFormProps {
 export const SearchInput: React.VFC = () => {
   const history = useHistory();
   const location = useLocation();
+  const { register, handleSubmit, getValues, setValue, watch } = useForm<IFormProps>();
+  const { searchTerm } = watch();
+
   useEffect(() => {
     const [type, category] = location.search.split('=');
     if (location.pathname === '/search' || (type.includes('category') && category)) {
-      setValue('searchTerm', category);
+      setValue('searchTerm', decodeURI(category));
     } else {
       setValue('searchTerm', '');
     }
-  }, [location]);
-  const { register, handleSubmit, getValues, setValue } = useForm<IFormProps>();
+  }, [location, setValue]);
+
   const onSearchSubmit = useCallback(() => {
     const { searchTerm } = getValues();
     history.push({
       pathname: '/search',
       search: `term=${searchTerm}`,
     });
-  }, [history]);
+  }, [getValues, history]);
+
+  const clearSearchTerm = useCallback(() => {
+    console.log('clear');
+
+    setValue('searchTerm', '');
+  }, [setValue]);
+
   return (
     <form
       onSubmit={handleSubmit(onSearchSubmit)}
@@ -42,6 +52,11 @@ export const SearchInput: React.VFC = () => {
         placeholder="What are you craving?"
         className="w-full bg-transparent group"
       />
+      {searchTerm !== '' && (
+        <span onClick={clearSearchTerm} className="text-sm text-gray-400 cursor-pointer">
+          Clear
+        </span>
+      )}
     </form>
   );
 };
