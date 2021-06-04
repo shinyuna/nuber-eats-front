@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { numberWithCommas } from '../formatters';
+
 interface IMenuProps {
   name: string;
   description: string;
@@ -15,7 +17,7 @@ export const Menu: React.FC<IMenuProps> = ({ name, description, price, photo }) 
           <p className="text-medium">{name}</p>
           <p className="mt-2 text-xs">{description}</p>
         </div>
-        <p>{price} &#8361;</p>
+        <p>{numberWithCommas(price)} &#8361;</p>
       </div>
       <div className="flex-1 flex-shrink h-40 bg-gray-200">
         <img className="object-cover w-full h-full" src={photo} alt={name} />
