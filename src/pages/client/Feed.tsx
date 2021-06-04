@@ -115,7 +115,7 @@ export const Feed: React.VFC = () => {
       </section>
       <div className="flex justify-center mt-10">
         {page > 1 && (
-          <button onClick={onPrevPage} className="text-xl font-medium focus:outline-none">
+          <button onClick={onPrevPage} className="text-xl font-medium">
             &larr;
           </button>
         )}
@@ -123,7 +123,7 @@ export const Feed: React.VFC = () => {
           Page {page} of {data?.getRestaurants.totalPages}
         </span>
         {page !== data?.getRestaurants.totalPages && (
-          <button onClick={onNextPage} className="text-xl font-medium focus:outline-none">
+          <button onClick={onNextPage} className="text-xl font-medium">
             &rarr;
           </button>
         )}

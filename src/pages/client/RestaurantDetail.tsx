@@ -47,8 +47,7 @@ export const RestaurantDetail = () => {
               <h4 className="page-h4">{data?.getRestaurant.restaurant?.name}</h4>
               <h5 className="mb-1 text-sm">{data?.getRestaurant.restaurant?.category?.name}</h5>
               <p className="text-sm">
-                {data?.getRestaurant.restaurant?.address} •{' '}
-                <button className="font-medium underline focus:outline-none">More info</button>
+                {data?.getRestaurant.restaurant?.address} • <button className="font-medium underline">More info</button>
               </p>
             </div>
           </div>

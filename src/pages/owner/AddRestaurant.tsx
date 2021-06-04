@@ -148,7 +148,7 @@ export const AddRestaurant: React.VFC = () => {
           />
           <input
             readOnly
-            className="col-start-1 col-end-4 px-4 focus:outline-none input"
+            className="col-start-1 col-end-4 px-4 input"
             type="text"
             name="fileName"
             ref={register()}

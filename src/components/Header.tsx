@@ -24,7 +24,7 @@ export const Header: React.VFC = () => {
       )}
       <header className="flex items-center w-full px-10 py-4 sm:px-5">
         <div className="flex flex-1 w-full">
-          <button className="mr-6 focus:outline-none" onClick={onShowNav}>
+          <button className="mr-6" onClick={onShowNav}>
             <FontAwesomeIcon icon={faHamburger} className="text-2xl" />
           </button>
           <UberLogo logoSize="w-32 sm:hidden" />

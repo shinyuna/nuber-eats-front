@@ -1,8 +1,9 @@
 @tailwind base;
 @tailwind components;
 
-.container {
-  @apply px-10 sm:px-5;
+input:focus,
+button:focus {
+  outline: none;
 }
 .input {
   @apply p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900;

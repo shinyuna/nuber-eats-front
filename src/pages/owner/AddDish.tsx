@@ -152,7 +152,7 @@ export const AddDish = () => {
           />
           <input
             readOnly
-            className="col-start-1 col-end-4 px-4 sm:col-end-3 focus:outline-none input"
+            className="col-start-1 col-end-4 px-4 sm:col-end-3 input"
             type="text"
             name="fileName"
             ref={register}
@@ -165,7 +165,7 @@ export const AddDish = () => {
         <h2 className="text-xl">
           Menu Option <span className="text-sm text-gray-400">(optional)</span>
         </h2>
-        <button className="text-left text-uber focus:outline-none" onClick={addMenuOptions}>
+        <button className="text-left text-uber " onClick={addMenuOptions}>
           <FontAwesomeIcon icon={faPlus} className="mr-1" /> Add Option group
         </button>
         {optionsCount.length > 0 &&
@@ -173,7 +173,7 @@ export const AddDish = () => {
             <div key={id}>
               <h3 className="flex justify-between mb-3 text-sm">
                 Option {index + 1}
-                <button className="w-5 h-5 bg-red-100 focus:outline-none" onClick={() => deleteMenuOptions(id)}>
+                <button className="w-5 h-5 bg-red-100 " onClick={() => deleteMenuOptions(id)}>
                   <FontAwesomeIcon icon={faTimes} className="text-red-400" />
                 </button>
               </h3>

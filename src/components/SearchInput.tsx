@@ -40,7 +40,7 @@ export const SearchInput: React.VFC = () => {
         type="text"
         name="searchTerm"
         placeholder="What are you craving?"
-        className="w-full bg-transparent focus:outline-none group"
+        className="w-full bg-transparent group"
       />
     </form>
   );
