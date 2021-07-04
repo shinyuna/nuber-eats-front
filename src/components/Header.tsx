@@ -31,7 +31,7 @@ export const Header: React.VFC = () => {
         </div>
         <SearchInput />
       </header>
-      <SideNavigation show={showNav} user={data?.me.email} onCloseNav={onCloseNav} />
+      <SideNavigation show={showNav} user={data?.me.email} role={data?.me.role+""} onCloseNav={onCloseNav} />
     </>
   );
 };

@@ -1,13 +1,14 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOut, faUser, faUtensilsAlt, faHatChef, faReceipt } from '@fortawesome/pro-regular-svg-icons';
-import { Link, useLocation } from 'react-router-dom';
+import { faSignOut, faUser, faUtensilsAlt, faHatChef, faReceipt, faHeart } from '@fortawesome/pro-regular-svg-icons';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { authToken, client, isLoggedInVar } from '../apollo';
 import { AUTH_TOKEN } from '../constants';
 
 interface ISideNavProps {
   onCloseNav: () => void;
-  user: string | undefined;
+  user?: string;
+  role?: string;
   show: boolean;
 }
 
@@ -32,17 +33,17 @@ const nav = {
   client: [
     {
       icon: faUtensilsAlt,
-      title: 'My Restaurants',
+      title: 'Food Feed',
       path: '/',
     },
     {
-      icon: faHatChef,
-      title: 'Create Restaurant',
+      icon: faHeart,
+      title: 'Like Restaurants',
       path: '/add-restaurant',
     },
     {
       icon: faReceipt,
-      title: 'Orders',
+      title: 'My Orders',
       path: '',
     },
   ],
@@ -65,20 +66,36 @@ const nav = {
   ],
 };
 
-export const SideNavigation: FC<ISideNavProps> = ({ user, show, onCloseNav }) => {
+export const SideNavigation: FC<ISideNavProps> = ({ user, show, role, onCloseNav }) => {
   const location = useLocation();
+  const history = useHistory()
+
   useEffect(() => {
     onCloseNav();
-  }, [location]);
+  }, [location, onCloseNav]);
+
   const stopPropagation = useCallback(e => {
     e.stopPropagation();
   }, []);
+
   const onLogout = useCallback(() => {
     sessionStorage.removeItem(AUTH_TOKEN);
     authToken(null);
     isLoggedInVar(false);
     client.clearStore();
-  }, []);
+    history.push('/')
+  }, [history]);
+
+  const getNav = useCallback((roleStr) => {
+    if (roleStr === 'Client') {
+      return nav['client']
+    } else if (roleStr === 'Owner') {
+      return nav['owner']
+    } else {
+      return nav['driver']
+    }
+  }, [])
+
   return (
     <div
       className={`fixed top-0 left-0 w-full h-screen overflow-hidden bg-black bg-opacity-50 transition-all duration-500 ease-in-out z-50 ${
@@ -105,7 +122,7 @@ export const SideNavigation: FC<ISideNavProps> = ({ user, show, onCloseNav }) =>
             </div>
           </div>
           <div className="mt-10">
-            {nav['owner'].map(menu => (
+            {getNav(role).map(menu => (
               <div
                 className={`flex items-center my-5 ${location.pathname === menu.path ? 'text-uber' : ''}`}
                 key={menu.path}
