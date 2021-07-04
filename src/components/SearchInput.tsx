@@ -32,15 +32,13 @@ export const SearchInput: React.VFC = () => {
   }, [getValues, history]);
 
   const clearSearchTerm = useCallback(() => {
-    console.log('clear');
-
     setValue('searchTerm', '');
   }, [setValue]);
 
   return (
     <form
       onSubmit={handleSubmit(onSearchSubmit)}
-      className="flex w-3/5 p-4 transition-all duration-300 ease-in-out bg-gray-100 border-b-2 sm:w-11/12 focus-within:border-black"
+      className="flex w-3/5 max-w-2xl p-4 transition-all duration-300 ease-in-out bg-gray-100 border-b-2 sm:w-11/12 focus-within:border-black"
     >
       <span>
         <FontAwesomeIcon icon={faSearch} className="mr-4 text-lg" />
@@ -52,7 +50,7 @@ export const SearchInput: React.VFC = () => {
         placeholder="What are you craving?"
         className="w-full bg-transparent group"
       />
-      {searchTerm !== '' && (
+      {searchTerm && (
         <span onClick={clearSearchTerm} className="text-sm text-gray-400 cursor-pointer">
           Clear
         </span>

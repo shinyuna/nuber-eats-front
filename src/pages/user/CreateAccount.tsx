@@ -25,7 +25,7 @@ interface ICreateAccountForm {
 }
 
 export const CreateAccount: React.VFC = () => {
-  const { register, getValues, errors, handleSubmit, formState, watch } = useForm<ICreateAccountForm>({
+  const { register, getValues, errors, handleSubmit, formState } = useForm<ICreateAccountForm>({
     mode: 'onChange',
     defaultValues: {
       role: UserRole.Client,

@@ -96,13 +96,13 @@ export const Feed: React.VFC = () => {
         </div>
       </section>
       <section className="py-5 mx-10 border-b">
-        <ul className="flex justify-around max-w-xl mx-auto" onClick={onCategorySearch}>
+        <ul className="flex justify-around max-w-xl mx-auto sm:bg-scroll" onClick={onCategorySearch}>
           {data?.getCategories.categories?.map(category => (
             <Category key={category.id} slug={category.slug} name={category.name} coverImage={category.coverImage} />
           ))}
         </ul>
       </section>
-      <section className="grid grid-cols-4 gap-5 px-10 mt-10">
+      <section className="grid grid-cols-4 gap-5 px-10 mt-10 md:grid-cols-3 sm:grid-cols-1">
         {data?.getRestaurants.result?.map(restaurant => (
           <Restaurant
             key={restaurant.id}
