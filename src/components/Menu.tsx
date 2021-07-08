@@ -7,9 +7,10 @@ interface IMenuProps {
   description: string;
   price: number;
   photo: string;
+  isCustomer?: boolean;
 }
 
-export const Menu: React.FC<IMenuProps> = ({ name, description, price, photo }) => {
+export const Menu: React.FC<IMenuProps> = ({ name, description, price, photo, isCustomer = false }) => {
   return (
     <div className="flex">
       <div className="flex flex-col justify-between flex-1 p-4 border border-gray-200">
