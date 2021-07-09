@@ -39,30 +39,33 @@ export const LoggedInRouter = () => {
     );
   }
   return (
-    <Router>
-      <Header />
-      <Switch>
-        {data.me.role === 'Owner' &&
-          ownerRoutes.map(route => (
+    <>
+      <Router>
+        <Header />
+        <Switch>
+          {data.me.role === 'Owner' &&
+            ownerRoutes.map(route => (
+              <Route path={route.path} key={route.path} exact>
+                {route.component}
+              </Route>
+            ))}
+          {data.me.role === 'Client' &&
+            clientRoutes.map(route => (
+              <Route path={route.path} key={route.path} exact>
+                {route.component}
+              </Route>
+            ))}
+          {commonRoutes.map(route => (
             <Route path={route.path} key={route.path} exact>
               {route.component}
             </Route>
           ))}
-        {data.me.role === 'Client' &&
-          clientRoutes.map(route => (
-            <Route path={route.path} key={route.path} exact>
-              {route.component}
-            </Route>
-          ))}
-        {commonRoutes.map(route => (
-          <Route path={route.path} key={route.path} exact>
-            {route.component}
+          <Route>
+            <NotFound />
           </Route>
-        ))}
-        <Route>
-          <NotFound />
-        </Route>
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+      <div id="modal"></div>
+    </>
   );
 };
