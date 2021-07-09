@@ -1,5 +1,6 @@
-import { gql, useLazyQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
+
+import { gql, useLazyQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router';
 import { findRestaurantByCategory, findRestaurantByCategoryVariables } from '../../api-types/findRestaurantByCategory';
 import { findRestaurantByName, findRestaurantByNameVariables } from '../../api-types/findRestaurantByName';
@@ -43,30 +44,28 @@ const FIND_CATEGORY_RESTAURANT_QUERY = gql`
 export const Search: React.VFC = () => {
   const location = useLocation();
   const history = useHistory();
-  const [type, searchContent] = location.search.split('=');
-  const [callSearchNameQuery, { loading: nameLoading, data: nameData }] = useLazyQuery<
-    findRestaurantByName,
-    findRestaurantByNameVariables
-  >(FIND_NAME_RESTAURANT_QUERY);
-  const [callSearchCategoryQuery, { loading: categoryLoading, data: categoryData }] = useLazyQuery<
+  const [type, queryKeyword] = location.search.split('=');
+  const [callSearchNameQuery, { data: nameData }] = useLazyQuery<findRestaurantByName, findRestaurantByNameVariables>(
+    FIND_NAME_RESTAURANT_QUERY
+  );
+  const [callSearchCategoryQuery, { data: categoryData }] = useLazyQuery<
     findRestaurantByCategory,
     findRestaurantByCategoryVariables
   >(FIND_CATEGORY_RESTAURANT_QUERY);
   const data = nameData?.findRestaurantByName || categoryData?.findRestaurantByCategory;
-  console.log('🚀 ~ Search ~ data', data);
 
   useEffect(() => {
     const [, searchType] = type.split('?');
     const state = location.state;
 
-    if (!searchType || !searchContent) return history.replace('/');
+    if (!searchType || !queryKeyword || !state) return history.replace('/');
     if (searchType === 'term') {
       callSearchNameQuery({
         variables: {
           input: {
             page: 1,
             limit: 4,
-            query: searchContent,
+            query: queryKeyword,
           },
         },
       });
@@ -81,15 +80,15 @@ export const Search: React.VFC = () => {
         },
       });
     }
-  }, [history, location]);
+  }, [callSearchCategoryQuery, callSearchNameQuery, history, location, queryKeyword, type]);
   return (
     <main className="flex px-10 mt-6 sm:px-5 sm:flex-col">
       <HelmetTitle title={'Search | Nuber Eats'} />
       <div className="w-1/5 sm:mb-5 sm:w-full">
-        <h2 className="text-xl font-semibold">"{decodeURI(searchContent)}"</h2>
+        <h2 className="text-xl font-semibold">"{decodeURI(queryKeyword)}"</h2>
         <p className="mt-2 text-sm font-light">{data?.totalCount}+ Restaurants</p>
       </div>
-      <div className="grid w-4/5 grid-cols-3 gap-5 sm:w-full sm:grid-cols-1">
+      <div className="grid w-4/5 grid-cols-3 gap-5 sm:w-full md:grid-cols-2 sm:grid-cols-1">
         {data?.restaurants?.map(restaurant => (
           <Restaurant
             key={restaurant.id}
