@@ -32,7 +32,7 @@ export const DISH_FRAGMENT = gql`
     description
     options {
       name
-      price
+      max
       choices {
         name
         price

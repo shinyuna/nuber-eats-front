@@ -23,8 +23,8 @@ export interface getRestaurant_getRestaurant_restaurant_menu_options_choices {
 export interface getRestaurant_getRestaurant_restaurant_menu_options {
   __typename: "DishOption";
   name: string;
-  price: number | null;
-  choices: getRestaurant_getRestaurant_restaurant_menu_options_choices[] | null;
+  max: number | null;
+  choices: getRestaurant_getRestaurant_restaurant_menu_options_choices[];
 }
 
 export interface getRestaurant_getRestaurant_restaurant_menu {
