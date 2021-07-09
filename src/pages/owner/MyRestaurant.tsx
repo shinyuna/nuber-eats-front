@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
@@ -104,15 +103,7 @@ export const MyRestaurant = () => {
             )}
             <div className="grid grid-cols-3 gap-10 sm:grid-cols-1 md:grid-cols-2">
               {!loading &&
-                data?.getRestaurantByOwner.restaurant?.menu.map(menu => (
-                  <Menu
-                    key={menu.name}
-                    name={menu.name}
-                    description={menu.description}
-                    price={menu.price}
-                    photo={menu.photo}
-                  />
-                ))}
+                data?.getRestaurantByOwner.restaurant?.menu.map(menu => <Menu key={menu.name} menu={menu} />)}
             </div>
           </div>
         ) : (
