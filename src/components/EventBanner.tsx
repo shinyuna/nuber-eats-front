@@ -1,4 +1,4 @@
-import eventImage from '../assets/images/banner.png';
+import eventImage from '../assets/images/banner2.png';
 
 export const EventBanner = () => {
   return (
@@ -8,12 +8,14 @@ export const EventBanner = () => {
         <p className="font-extralight">Search for a favorite restaurant, cuisine, or dish.</p>
       </div>
       <div className="flex justify-center w-2/3">
-        <div className="flex w-1/2">
-          <div className="flex flex-col justify-between w-3/5 p-5 bg-yellow-400">
-            <p className="text-xl font-semibold break-words">Unlimited $0 delivery fee + 5% off with Eats Pass</p>
+        <div className="flex w-1/2 overflow-hidden rounded-xl">
+          <div className="flex flex-col justify-between w-4/6 p-5 bg-red-100">
+            <p className="text-3xl font-semibold break-words  md:text-xl">
+              Unlimited $0 delivery fee + 5% off with Eats Pass
+            </p>
             <button className="px-4 py-2 text-sm text-white bg-gray-900 rounded-full">Try 1 month free →</button>
           </div>
-          <img className="w-2/5" src={eventImage} alt="event banner" />
+          <img className="w-2/6" src={eventImage} alt="event banner" />
         </div>
       </div>
     </section>
