@@ -165,39 +165,56 @@ export const AddDish = () => {
         <h2 className="text-xl">
           Menu Option <span className="text-sm text-gray-400">(optional)</span>
         </h2>
-        <button className="text-left text-uber " onClick={addMenuOptions}>
+        <button className="text-left text-uber" onClick={addMenuOptions}>
           <FontAwesomeIcon icon={faPlus} className="mr-1" /> Add Option group
         </button>
         {optionsCount.length > 0 &&
           optionsCount.map((id, index) => (
-            <div key={id}>
-              <h3 className="flex justify-between mb-3 text-sm">
-                Option {index + 1}
-                <button className="w-5 h-5 bg-red-100 " onClick={() => deleteMenuOptions(id)}>
-                  <FontAwesomeIcon icon={faTimes} className="text-red-400" />
-                </button>
-              </h3>
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  ref={register({
-                    required: 'Option name is required.',
-                  })}
-                  type="text"
-                  name={`optionName-${id}`}
-                  className="input"
-                  placeholder="Option name"
-                  autoFocus
-                />
-                <input
-                  ref={register({
-                    min: 0,
-                  })}
-                  type="number"
-                  name={`optionPrice-${id}`}
-                  min="0"
-                  className="input"
-                  placeholder="Option price"
-                />
+            <div key={id} className="">
+              <button
+                className="float-right px-2 py-1 text-sm text-red-500 bg-red-100"
+                onClick={() => deleteMenuOptions(id)}
+              >
+                옵션그룹{index + 1} 삭제
+              </button>
+              <div className="grid w-full gap-6">
+                <div>
+                  <p className="mb-4 text-base">옵션그룹명</p>
+                  <input
+                    ref={register({
+                      required: 'Option name is required.',
+                    })}
+                    type="text"
+                    name={`optionName-${id}`}
+                    className="w-full input"
+                    placeholder="Name"
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <p className="mb-4 text-base">필수 여부</p>
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-1">
+                    <div className="flex items-center justify-around">
+                      <input type="radio" id="true" name="isRequired" defaultChecked />
+                      <label htmlFor="true" className="text-sm">
+                        해당 옵션을 반드시 선택해야 주문 가능
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-around">
+                      <input type="radio" id="false" name="isRequired" />
+                      <label htmlFor="false" className="text-sm">
+                        해당 옵션을 선택하지 않아도 주문 가능
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p className="mb-4 text-base">옵션 수 (최소/최대)</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input type="number" className="w-full input" min="0" placeholder="Min" />
+                    <input type="number" className="w-full input" min="1" placeholder="Max" />
+                  </div>
+                </div>
               </div>
             </div>
           ))}
