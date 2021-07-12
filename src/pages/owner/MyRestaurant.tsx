@@ -15,6 +15,8 @@ import {
   VictoryLabel,
   VictoryTooltip,
 } from 'victory';
+import MenuControl, { MenuInfo } from '../../components/MenuControl';
+import RestaurantBanner from '../../components/RestaurantBanner';
 
 export const MY_RESTAURANT_QUERY = gql`
   query getRestaurantByOwner($input: RestaurantInput!) {
@@ -41,9 +43,13 @@ interface IParams {
 }
 
 export const MyRestaurant = () => {
+  const { id } = useParams<IParams>();
+
   const tabs = ['menu', 'sales'];
   const [tab, setTab] = useState('menu');
-  const { id } = useParams<IParams>();
+  const [popVisible, setPopVisible] = useState(false);
+  const [selectMenu, setSelectMenu] = useState<MenuInfo>();
+
   const { data, loading } = useQuery<getRestaurantByOwner, getRestaurantByOwnerVariables>(MY_RESTAURANT_QUERY, {
     variables: {
       input: {
@@ -51,32 +57,25 @@ export const MyRestaurant = () => {
       },
     },
   });
+
+  const onControler = (id: number, name: string) => {
+    setPopVisible(true);
+    setSelectMenu({ id: id, name: name });
+  };
+  const onClose = () => {
+    setPopVisible(false);
+  };
+
   useEffect(() => {}, [data, loading]);
 
   return (
     <main>
-      <div
-        className="relative bg-gray-200 bg-center bg-cover py-36 "
-        style={{
-          backgroundImage: `url(${data?.getRestaurantByOwner.restaurant?.coverImage})`,
-        }}
-      >
-        <div
-          className="absolute bottom-0 left-0 flex items-end w-full h-1/2"
-          style={{ background: `linear-gradient(0deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0) 100%)` }}
-        >
-          <div className="px-10 py-6 text-white sm:px-5">
-            <div>
-              <h4 className="page-h4">{data?.getRestaurantByOwner.restaurant?.name}</h4>
-              <h5 className="mb-1 text-sm">{data?.getRestaurantByOwner.restaurant?.category?.name}</h5>
-              <p className="text-sm">
-                {data?.getRestaurantByOwner.restaurant?.address} •{' '}
-                <button className="font-medium underline">More info</button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <RestaurantBanner
+        coverImage={data?.getRestaurantByOwner.restaurant?.coverImage!}
+        name={data?.getRestaurantByOwner.restaurant?.name!}
+        category={data?.getRestaurantByOwner.restaurant?.category?.name!}
+        address={data?.getRestaurantByOwner.restaurant?.address!}
+      />
       <div className="px-10 sm:px-5">
         <div className="py-6">
           <Link to={`/restaurant/${id}/add-dish`} className="inline-block mr-4 text-sm bg-gray-800 rounded-full button">
@@ -103,8 +102,11 @@ export const MyRestaurant = () => {
             )}
             <div className="grid grid-cols-3 gap-10 sm:grid-cols-1 md:grid-cols-2">
               {!loading &&
-                data?.getRestaurantByOwner.restaurant?.menu.map(menu => <Menu key={menu.name} menu={menu} />)}
+                data?.getRestaurantByOwner.restaurant?.menu.map(menu => (
+                  <Menu key={menu.name} menu={menu} openControler={() => onControler(menu.id, menu.name)} />
+                ))}
             </div>
+            <MenuControl visible={popVisible} onClose={onClose} menuInfo={selectMenu!} />
           </div>
         ) : (
           <div>
