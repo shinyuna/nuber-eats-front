@@ -17,14 +17,14 @@ export interface getRestaurantByOwner_getRestaurantByOwner_restaurant_category {
 export interface getRestaurantByOwner_getRestaurantByOwner_restaurant_menu_options_choices {
   __typename: "DishChoice";
   name: string;
-  price: number | null;
+  price: number;
 }
 
 export interface getRestaurantByOwner_getRestaurantByOwner_restaurant_menu_options {
   __typename: "DishOption";
   name: string;
-  max: number | null;
-  choices: getRestaurantByOwner_getRestaurantByOwner_restaurant_menu_options_choices[];
+  max: number;
+  choices: getRestaurantByOwner_getRestaurantByOwner_restaurant_menu_options_choices[] | null;
 }
 
 export interface getRestaurantByOwner_getRestaurantByOwner_restaurant_menu {

@@ -17,14 +17,14 @@ export interface getRestaurant_getRestaurant_restaurant_category {
 export interface getRestaurant_getRestaurant_restaurant_menu_options_choices {
   __typename: "DishChoice";
   name: string;
-  price: number | null;
+  price: number;
 }
 
 export interface getRestaurant_getRestaurant_restaurant_menu_options {
   __typename: "DishOption";
   name: string;
-  max: number | null;
-  choices: getRestaurant_getRestaurant_restaurant_menu_options_choices[];
+  max: number;
+  choices: getRestaurant_getRestaurant_restaurant_menu_options_choices[] | null;
 }
 
 export interface getRestaurant_getRestaurant_restaurant_menu {

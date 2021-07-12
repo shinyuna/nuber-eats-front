@@ -42,8 +42,10 @@ export interface DishChoiceInputType {
 
 export interface DishOptionInputType {
   name: string;
-  choices: DishChoiceInputType[];
+  choices?: DishChoiceInputType[] | null;
+  min?: number | null;
   max?: number | null;
+  isRequired?: boolean | null;
 }
 
 export interface EditProfileInput {
