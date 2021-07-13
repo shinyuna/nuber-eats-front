@@ -32,9 +32,11 @@ interface IFormProps {
 
 export const AddRestaurant: React.VFC = () => {
   const history = useHistory();
+
   const { data: userData } = useMe();
   const [uploading, setUploading] = useState(false);
   const [imgUrl, setImgUrl] = useState('');
+
   const onCompleted = useCallback(
     (data: createRestaurant) => {
       const {
@@ -72,17 +74,21 @@ export const AddRestaurant: React.VFC = () => {
     },
     [imgUrl]
   );
+
   const [createRestaurant, { data }] = useMutation<createRestaurant, createRestaurantVariables>(
     CREATE_RESTAURANT_MUTATION,
     { onCompleted }
   );
+
   const { register, getValues, formState, handleSubmit, setValue } = useForm<IFormProps>({
     mode: 'onChange',
   });
+
   const updateFileName = useCallback(() => {
     const { file } = getValues();
     setValue('fileName', file[0].name);
   }, [getValues().fileName]);
+
   const onSubmit = useCallback(async () => {
     try {
       setUploading(true);
@@ -104,6 +110,7 @@ export const AddRestaurant: React.VFC = () => {
       setUploading(false);
     }
   }, [uploading]);
+
   return (
     <main className="px-10 sm:px-5">
       <HelmetTitle title={'Create Restaurant | Nuber Eats'} />

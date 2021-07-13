@@ -44,9 +44,11 @@ export const AddDish = () => {
   const { data: userData } = useMe();
   const { restaurantId } = useParams<IParams>();
   const [optionsCount, setOptionsCount] = useState<number[]>([]);
+
   const { register, handleSubmit, formState, getValues, setValue } = useForm<IForm>({
     mode: 'onChange',
   });
+
   const [createDish, { data }] = useMutation<createDish, createDishVariables>(CREATE_DISH_MUTATION, {
     refetchQueries: [
       {
@@ -65,7 +67,9 @@ export const AddDish = () => {
       const { name, description, price, file, ...rest } = getValues();
       const optionObjects = optionsCount.map(theId => ({
         name: rest[`optionName-${theId}`],
-        price: +rest[`optionPrice-${theId}`],
+        min: +rest[`optionMin-${theId}`],
+        max: +rest[`optionMax-${theId}`],
+        isRequired: rest[`optionRequired-${theId}`] === 'true' ? true : false,
       }));
       const photo = await s3ImageUpload(file, userData?.me.id + '', `${restaurantId}_dish_${name}_img`);
       createDish({
@@ -102,15 +106,17 @@ export const AddDish = () => {
     (removeId: number) => {
       setOptionsCount(current => current.filter(id => id !== removeId));
       setValue(`optionName-${removeId}`, '');
-      setValue(`optionPrice-${removeId}`, '');
+      setValue(`optionRequired-${removeId}`, '');
+      setValue(`optionMax-${removeId}`, '');
+      setValue(`optionMin-${removeId}`, '');
     },
     [setValue]
   );
   return (
     <main className="px-10 sm:px-5">
       <HelmetTitle title={'Create Dish | Nuber Eats'} />
-      <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-3xl gap-3 mx-auto mt-10">
-        <h1 className="my-5 text-3xl font-semibold">Add Menu</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-3xl gap-3 mx-auto">
+        <h1 className="my-5 text-3xl font-semibold">메뉴 추가</h1>
         <input
           className="input"
           name="name"
@@ -159,23 +165,23 @@ export const AddDish = () => {
             placeholder="Dish Photo"
           />
           <label className="text-sm button bg-lime-500" htmlFor="menu_image">
-            Upload
+            업로드
           </label>
         </div>
         <h2 className="text-xl">
-          Menu Option <span className="text-sm text-gray-400">(optional)</span>
+          옵션 메뉴 <span className="text-sm text-gray-400">(선택)</span>
         </h2>
         <button className="text-left text-uber" onClick={addMenuOptions}>
-          <FontAwesomeIcon icon={faPlus} className="mr-1" /> Add Option group
+          <FontAwesomeIcon icon={faPlus} className="mr-1" /> 옵션그룹 추가
         </button>
         {optionsCount.length > 0 &&
           optionsCount.map((id, index) => (
-            <div key={id} className="">
+            <div key={id}>
               <button
-                className="float-right px-2 py-1 text-sm text-red-500 bg-red-100"
+                className="float-right w-8 h-8 text-sm rounded-full text-lime-600 bg-lime-100"
                 onClick={() => deleteMenuOptions(id)}
               >
-                옵션그룹{index + 1} 삭제
+                <FontAwesomeIcon icon={faTimes} />
               </button>
               <div className="grid w-full gap-6">
                 <div>
@@ -194,14 +200,31 @@ export const AddDish = () => {
                 <div>
                   <p className="mb-4 text-base">필수 여부</p>
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-1">
-                    <div className="flex items-center justify-around">
-                      <input type="radio" id="true" name="isRequired" defaultChecked />
+                    <div className="flex items-center justify-between">
+                      <input
+                        ref={register({
+                          required: 'required is required.',
+                        })}
+                        type="radio"
+                        value="true"
+                        id="true"
+                        name={`optionRequired-${id}`}
+                        defaultChecked
+                      />
                       <label htmlFor="true" className="text-sm">
                         해당 옵션을 반드시 선택해야 주문 가능
                       </label>
                     </div>
-                    <div className="flex items-center justify-around">
-                      <input type="radio" id="false" name="isRequired" />
+                    <div className="flex items-center justify-between">
+                      <input
+                        ref={register({
+                          required: 'required is required.',
+                        })}
+                        type="radio"
+                        value="false"
+                        id="false"
+                        name={`optionRequired-${id}`}
+                      />
                       <label htmlFor="false" className="text-sm">
                         해당 옵션을 선택하지 않아도 주문 가능
                       </label>
@@ -209,16 +232,30 @@ export const AddDish = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="mb-4 text-base">옵션 수 (최소/최대)</p>
+                  <p className="mb-4 text-base">옵션 선택 수 (최소/최대)</p>
                   <div className="grid grid-cols-2 gap-4">
-                    <input type="number" className="w-full input" min="0" placeholder="Min" />
-                    <input type="number" className="w-full input" min="1" placeholder="Max" />
+                    <input
+                      ref={register()}
+                      type="number"
+                      name={`optionMin-${id}`}
+                      className="w-full input"
+                      min="0"
+                      placeholder="Min"
+                    />
+                    <input
+                      ref={register()}
+                      type="number"
+                      name={`optionMax-${id}`}
+                      className="w-full input"
+                      min="1"
+                      placeholder="Max"
+                    />
                   </div>
                 </div>
               </div>
             </div>
           ))}
-        <FormButton actionText={'Create Dish'} isLoading={false} isValid={formState.isValid} />
+        <FormButton actionText={'메뉴 생성'} isLoading={false} isValid={formState.isValid} />
         {data?.createDish.error && <FormError errMsg={data?.createDish.error} />}
       </form>
     </main>
