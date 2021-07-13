@@ -35,6 +35,10 @@ export interface CreateRestaurantInput {
   categoryName: string;
 }
 
+export interface DeleteDishInput {
+  dishId: number;
+}
+
 export interface DishChoiceInputType {
   name: string;
   price?: number | null;
@@ -43,9 +47,9 @@ export interface DishChoiceInputType {
 export interface DishOptionInputType {
   name: string;
   choices?: DishChoiceInputType[] | null;
+  isRequired?: boolean | null;
   min?: number | null;
   max?: number | null;
-  isRequired?: boolean | null;
 }
 
 export interface EditProfileInput {

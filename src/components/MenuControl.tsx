@@ -12,9 +12,10 @@ interface MenuControlProps {
   visible: boolean;
   menuInfo: MenuInfo;
   onClose: () => void;
+  deleteMenu: () => void;
 }
 
-const MenuControl = ({ visible, menuInfo, onClose }: MenuControlProps) => {
+const MenuControl = ({ visible, menuInfo, onClose, deleteMenu }: MenuControlProps) => {
   if (!visible) return null;
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -35,7 +36,9 @@ const MenuControl = ({ visible, menuInfo, onClose }: MenuControlProps) => {
           <ul className="text-lg text-center cursor-pointer">
             <li className="py-4 border-b border-gray-200">메뉴 정보 변경</li>
             <li className="py-4 border-b border-gray-200">메뉴 옵션 설정</li>
-            <li className="py-4 text-red-500">메뉴 삭제</li>
+            <li className="py-4 text-red-500" onClick={deleteMenu}>
+              메뉴 삭제
+            </li>
           </ul>
         </div>
       </div>

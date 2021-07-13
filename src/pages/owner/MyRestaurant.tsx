@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { getRestaurantByOwner, getRestaurantByOwnerVariables } from '../../api-types/getRestaurantByOwner';
@@ -17,6 +17,7 @@ import {
 } from 'victory';
 import MenuControl, { MenuInfo } from '../../components/MenuControl';
 import RestaurantBanner from '../../components/RestaurantBanner';
+import { deleteDish, deleteDishVariables } from '../../api-types/deleteDish';
 
 export const MY_RESTAURANT_QUERY = gql`
   query getRestaurantByOwner($input: RestaurantInput!) {
@@ -38,6 +39,15 @@ export const MY_RESTAURANT_QUERY = gql`
   ${DISH_FRAGMENT}
   ${ORDERS_FRAGMENT}
 `;
+const DELETE_DISH_MUTATION = gql`
+  mutation deleteDish($input: DeleteDishInput!) {
+    deleteDish(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 interface IParams {
   id: string;
 }
@@ -58,6 +68,37 @@ export const MyRestaurant = () => {
     },
   });
 
+  const [deleteDish] = useMutation<deleteDish, deleteDishVariables>(DELETE_DISH_MUTATION, {
+    refetchQueries: [
+      {
+        query: MY_RESTAURANT_QUERY,
+        variables: {
+          input: {
+            restaurantId: +id,
+          },
+        },
+      },
+    ],
+  });
+  const onDeleteMenu = async () => {
+    const confirm = window.confirm(`${selectMenu?.name} 메뉴를 정말 삭제하시겠습니까?`);
+    try {
+      if (!confirm || !selectMenu?.id) {
+        return;
+      }
+      deleteDish({
+        variables: {
+          input: {
+            dishId: selectMenu?.id,
+          },
+        },
+      });
+      onClose();
+    } catch (error) {
+      console.log('🚀 ~ onDeleteMenu ~ error', error);
+    }
+  };
+
   const onControler = (id: number, name: string) => {
     setPopVisible(true);
     setSelectMenu({ id: id, name: name });
@@ -66,7 +107,9 @@ export const MyRestaurant = () => {
     setPopVisible(false);
   };
 
-  useEffect(() => {}, [data, loading]);
+  useEffect(() => {
+    return () => setPopVisible(false);
+  }, []);
 
   return (
     <main>
@@ -106,7 +149,7 @@ export const MyRestaurant = () => {
                   <Menu key={menu.name} menu={menu} openControler={() => onControler(menu.id, menu.name)} />
                 ))}
             </div>
-            <MenuControl visible={popVisible} onClose={onClose} menuInfo={selectMenu!} />
+            <MenuControl visible={popVisible} onClose={onClose} menuInfo={selectMenu!} deleteMenu={onDeleteMenu} />
           </div>
         ) : (
           <div>
