@@ -24,12 +24,20 @@ const OrderScreen = ({ visible, menu, onClose }: OrderScreenProps) => {
       >
         <div className="max-w-2xl bg-white" onClick={stopPropagation}>
           <div className="h-96">
-            <img className="object-cover object-bottom w-full h-full" src={menu.photo} alt={menu.name} />
+            <img className="object-cover object-center w-full h-full" src={menu.photo} alt={menu.name} />
           </div>
-          <div className="mx-4 my-4">
-            <div>
+          <div className="py-4">
+            <div className="px-4">
               <h1 className="text-2xl">{menu.name}</h1>
               <p className="mt-2 text-sm">{menu.description}</p>
+            </div>
+            <div className="mt-4">
+              {menu.options?.length !== 0 &&
+                menu.options?.map((option, index) => (
+                  <div key={index} className="px-4 py-4 bg-gray-100">
+                    <h4 className="text-lg">{option.name}</h4>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
