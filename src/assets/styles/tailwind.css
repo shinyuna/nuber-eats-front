@@ -6,10 +6,10 @@ button:focus {
   outline: none;
 }
 .input {
-  @apply p-3 transition-colors border border-gray-200 focus:outline-none focus:border-gray-900;
+  @apply p-3 transition-colors border border-gray-200 rounded-md focus:outline-none focus:border-gray-900;
 }
 .button {
-  @apply px-6 py-3 text-center text-white transition-colors cursor-pointer bg-lime-600 focus:outline-none sm:text-sm;
+  @apply px-6 py-3 text-center text-white transition-colors rounded-md cursor-pointer bg-lime-500 focus:outline-none sm:text-sm;
 }
 .page-h4 {
   @apply mb-3 text-3xl font-semibold;
