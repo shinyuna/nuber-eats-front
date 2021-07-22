@@ -8,7 +8,6 @@ interface ModalPortalProps {
 
 const ModalPortal = ({ children }: ModalPortalProps) => {
   const el = useMemo(() => document.getElementById('modal'), []);
-  console.log(el, children);
 
   if (!el) return null;
   return ReactDOM.createPortal(children, el);
