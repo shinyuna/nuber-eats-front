@@ -1,7 +1,8 @@
 import React from 'react';
 import ModalPortal from './ModalPortal';
 
-import { DishParts } from '../api-types/DishParts';
+import { DishParts } from '../../api-types/DishParts';
+import ModalBackground from './ModalBackground';
 
 interface OrderScreenProps {
   visible: boolean;
@@ -18,10 +19,7 @@ const OrderScreen = ({ visible, menu, onClose }: OrderScreenProps) => {
 
   return (
     <ModalPortal>
-      <div
-        className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50"
-        onClick={onClose}
-      >
+      <ModalBackground onClose={onClose}>
         <div className="max-w-2xl bg-white" onClick={stopPropagation}>
           <div className="h-96">
             <img className="object-cover object-center w-full h-full" src={menu.photo} alt={menu.name} />
@@ -41,7 +39,7 @@ const OrderScreen = ({ visible, menu, onClose }: OrderScreenProps) => {
             </div>
           </div>
         </div>
-      </div>
+      </ModalBackground>
     </ModalPortal>
   );
 };

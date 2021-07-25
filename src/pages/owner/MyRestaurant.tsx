@@ -15,7 +15,7 @@ import {
   VictoryLabel,
   VictoryTooltip,
 } from 'victory';
-import MenuControl, { MenuInfo } from '../../components/MenuControl';
+import MenuControl, { MenuInfo } from '../../components/Modal/MenuControl';
 import RestaurantBanner from '../../components/RestaurantBanner';
 import { deleteDish, deleteDishVariables } from '../../api-types/deleteDish';
 

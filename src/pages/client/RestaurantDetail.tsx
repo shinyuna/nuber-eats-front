@@ -7,7 +7,7 @@ import { NoData } from '../../components/NoData';
 import { Menu } from '../../components/Menu';
 import { DishParts } from '../../api-types/DishParts';
 
-import OrderScreen from '../../components/OrderScreen';
+import OrderScreen from '../../components/Modal/OrderScreen';
 import RestaurantBanner from '../../components/RestaurantBanner';
 
 const RESTAURANT_QUERY = gql`
