@@ -14,7 +14,10 @@ const ModalBackground = ({ children, modalSize = 'max-w-md', onClose }: ModalBac
       className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50"
       onClick={onClose}
     >
-      <div className={`w-full bg-white sm:absolute sm:bottom-0 rounded-md ${modalSize}`} onClick={stopPropagation}>
+      <div
+        className={`w-full bg-white sm:absolute sm:bottom-0 rounded-md max-h-2/4 overflow-scroll min-h-sm ${modalSize}`}
+        onClick={stopPropagation}
+      >
         {children}
       </div>
     </div>
