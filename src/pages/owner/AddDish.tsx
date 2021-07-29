@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { gql, useMutation } from '@apollo/client';
 import { createDish, createDishVariables } from '../../api-types/createDish';
@@ -10,7 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/pro-light-svg-icons';
 import { useMe } from '../../hooks/useMe';
 import MenuInfo, { MenuInfoRef } from '../../components/AddDish/MenuInfo';
-import OptionMenu from '../../components/AddDish/OptionMenu';
+import MenuOption, { MenuOptionRef } from '../../components/AddDish/MenuOption';
+import { OptionData } from '../../components/Modal/OptionSettings';
+import { s3ImageUpload } from '../../utils';
+import MenuCheck from '../../components/AddDish/MenuCheck';
 
 const CREATE_DISH_MUTATION = gql`
   mutation createDish($input: CreateDishInput!) {
@@ -29,7 +32,9 @@ export interface MenuData {
   name: string;
   description: string;
   price: string;
-  [key: string]: string;
+  file: FileList;
+  fileName: string;
+  options: OptionData[];
 }
 
 /**
@@ -44,10 +49,11 @@ export const AddDish = () => {
   const { restaurantId } = useParams<IParams>();
 
   const [menuData, setMenuData] = useState<MenuData>();
+  console.log('🚀 ~ AddDish ~ menuData', menuData);
   const [currStep, setCurrStep] = useState<number>(1);
-  const [optionsCount, setOptionsCount] = useState<number[]>([]);
+  const [error, setError] = useState<string>('');
 
-  const [createDish, { data }] = useMutation<createDish, createDishVariables>(CREATE_DISH_MUTATION, {
+  const [createDish, { data, loading }] = useMutation<createDish, createDishVariables>(CREATE_DISH_MUTATION, {
     refetchQueries: [
       {
         query: MY_RESTAURANT_QUERY,
@@ -60,7 +66,8 @@ export const AddDish = () => {
     ],
   });
 
-  const childRef = useRef<MenuInfoRef>(null);
+  const childRef = useRef<MenuInfoRef | MenuOptionRef>(null);
+
   const saveData = (data: any) => {
     setMenuData(prev => {
       return { ...prev, ...data };
@@ -71,78 +78,76 @@ export const AddDish = () => {
     if (currStep >= 3) {
       return;
     }
-    childRef.current?.sendData();
+
+    const message = childRef.current?.sendData();
+    if (message) {
+      return setError(message);
+    }
+
+    setError('');
     setCurrStep(prev => prev + 1);
   };
   const prevStep = () => {
     if (currStep === 1) {
       return;
     }
+    childRef.current?.sendData();
     setCurrStep(prev => prev - 1);
   };
 
-  const setOptions = (fn: Function) => {
-    setOptionsCount(prev => fn(prev));
-  };
-
-  // const onSubmit = useCallback(async () => {
-  //   try {
-  //     const { name, description, price, file, ...rest } = getValues();
-  //     const optionObjects = optionsCount.map(theId => ({
-  //       name: rest[`optionName-${theId}`],
-  //       min: +rest[`optionMin-${theId}`],
-  //       max: +rest[`optionMax-${theId}`],
-  //       isRequired: rest[`optionRequired-${theId}`] === 'true' ? true : false,
-  //     }));
-  //     const photo = await s3ImageUpload(file, userData?.me.id + '', `${restaurantId}_dish_${name}_img`);
-  //     createDish({
-  //       variables: {
-  //         input: {
-  //           name,
-  //           description,
-  //           price: +price,
-  //           photo: photo,
-  //           restaurantId: +restaurantId,
-  //           options: optionObjects,
-  //         },
-  //       },
-  //     });
-  //     history.goBack();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [createDish, getValues, history, restaurantId, userData?.me.id]);
+  const onSubmit = useCallback(async () => {
+    try {
+      const photo = await s3ImageUpload(
+        menuData!.file,
+        userData?.me.id + '',
+        `${restaurantId}_dish_${menuData?.name}_img`
+      );
+      const options = menuData?.options.map(option => {
+        const { id, ...rest } = option;
+        return rest;
+      });
+      createDish({
+        variables: {
+          input: {
+            name: menuData!.name,
+            description: menuData!.description,
+            price: +menuData!.price,
+            photo: photo,
+            restaurantId: +restaurantId,
+            options: options,
+          },
+        },
+      });
+      history.goBack();
+    } catch (error) {
+      console.error(error);
+    }
+  }, [createDish, history, menuData, restaurantId, userData?.me.id]);
 
   return (
     <main className="max-w-3xl px-10 m-auto sm:px-5">
       <HelmetTitle title={'Create Dish | Nuber Eats'} />
-
-      {currStep === 1 && (
-        <MenuInfo
-          ref={childRef}
-          userId={userData?.me.id}
-          restaurantId={restaurantId}
-          enterData={menuData}
-          saveData={saveData}
-        />
-      )}
-      {currStep === 2 && <OptionMenu optionCounts={optionsCount} setOptions={setOptions} />}
+      {currStep === 1 && <MenuInfo ref={childRef} tempData={menuData} saveData={saveData} />}
+      {currStep === 2 && <MenuOption ref={childRef} saveData={saveData} tempData={menuData} />}
+      {currStep === 3 && <MenuCheck menuData={menuData!} />}
 
       <div className="mt-10 text-right">
+        {data?.createDish.error || (error && <FormError errMsg={data?.createDish.error || error} />)}
         {currStep > 1 && (
           <button className="p-4 mr-4 text-lime-500" onClick={prevStep}>
             <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
             이전
           </button>
         )}
-        <button className="button" onClick={nextStep}>
-          다음
-        </button>
+        {currStep < 3 && (
+          <button className="button" onClick={nextStep}>
+            다음
+          </button>
+        )}
+        {currStep === 3 && (
+          <FormButton actionText={'메뉴 등록'} isLoading={loading} isValid={true} onClick={onSubmit} />
+        )}
       </div>
-      {/* <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-3xl gap-3 mx-auto">
-        <FormButton actionText={'메뉴 생성'} isLoading={false} isValid={formState.isValid} />
-        {data?.createDish.error && <FormError errMsg={data?.createDish.error} />}
-      </form> */}
     </main>
   );
 };
