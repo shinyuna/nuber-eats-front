@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { gql, useMutation } from '@apollo/client';
 import { createDish, createDishVariables } from '../../api-types/createDish';
@@ -9,10 +9,10 @@ import { FormError } from '../../components/FormError';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/pro-light-svg-icons';
 import { useMe } from '../../hooks/useMe';
+import { s3ImageUpload } from '../../utils';
+import { OptionData } from '../../components/Modal/OptionSettings';
 import MenuInfo, { MenuInfoRef } from '../../components/AddDish/MenuInfo';
 import MenuOption, { MenuOptionRef } from '../../components/AddDish/MenuOption';
-import { OptionData } from '../../components/Modal/OptionSettings';
-import { s3ImageUpload } from '../../utils';
 import MenuCheck from '../../components/AddDish/MenuCheck';
 
 const CREATE_DISH_MUTATION = gql`
@@ -78,12 +78,10 @@ export const AddDish = () => {
     if (currStep >= 3) {
       return;
     }
-
     const message = childRef.current?.sendData();
     if (message) {
       return setError(message);
     }
-
     setError('');
     setCurrStep(prev => prev + 1);
   };

@@ -1,7 +1,6 @@
 import { faPlus } from '@fortawesome/pro-light-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { forwardRef, MouseEvent, useImperativeHandle, useState } from 'react';
-import { numberWithCommas } from '../../formatters';
 import { MenuData } from '../../pages/owner/AddDish';
 
 import OptionSettings, { OptionData } from '../Modal/OptionSettings';
