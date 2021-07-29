@@ -1,23 +1,20 @@
-import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/pro-light-svg-icons';
-import { s3ImageUpload } from '../../utils';
 import { MenuData } from '../../pages/owner/AddDish';
 
 export interface MenuInfoRef {
   sendData: () => void;
-  uploadS3Image: () => Promise<void>;
 }
 
 interface MenuInfoProps {
-  userId?: number;
-  restaurantId: string;
-  enterData?: MenuData;
+  tempData?: MenuData;
   saveData: (data: any) => void;
 }
 
 export interface MenuInfoForm {
+  [key: string]: any;
   name: string;
   description: string;
   price: string;
@@ -29,33 +26,33 @@ export interface MenuInfoForm {
  * @todo 데이터 미입력 시 버튼 안눌리게
  */
 
-const MenuInfo = ({ userId, restaurantId, enterData, saveData }: MenuInfoProps, ref: React.Ref<MenuInfoRef>) => {
+const MenuInfo = ({ tempData, saveData }: MenuInfoProps, ref: React.Ref<MenuInfoRef>) => {
   const { register, setValue, getValues } = useForm<MenuInfoForm>({
     mode: 'onChange',
     defaultValues: {
-      ...enterData,
+      ...tempData,
     },
   });
 
   useImperativeHandle(ref, () => ({
     sendData,
-    uploadS3Image,
   }));
 
-  const uploadS3Image = async () => {
-    const { name, file } = getValues();
-    const photo = await s3ImageUpload(file, userId + '', `${restaurantId}_dish_${name.trim()}_img`);
-    return photo;
-  };
+  const sendData = () => {
+    const data = getValues();
 
-  const sendData = async () => {
-    const { name, description, price, fileName, file } = getValues();
+    for (let item in data) {
+      if (!data[item]) {
+        return '빈 칸을 모두 채워주세요.';
+      }
+    }
+
     saveData({
-      name,
-      description,
-      price,
-      file,
-      fileName,
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      file: data.file,
+      fileName: data.fileName,
     });
   };
 
@@ -101,8 +98,8 @@ const MenuInfo = ({ userId, restaurantId, enterData, saveData }: MenuInfoProps, 
         })}
         placeholder="원"
       />
+      <p className="mb-2 text-base">메뉴 대표 이미지</p>
       <div className="grid grid-cols-5 gap-2 sm:grid-cols-4">
-        <p className="mb-2 text-base">메뉴 대표 이미지</p>
         <input
           id="menu_image"
           className="hidden"
