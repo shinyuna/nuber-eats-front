@@ -6,31 +6,30 @@ interface MenuCheckProps {
 }
 
 const MenuCheck = ({ menuData }: MenuCheckProps) => {
-  console.log('🚀 ~ MenuCheck ~ menuData', menuData);
   return (
     <div>
-      <h1>메뉴 등록 정보</h1>
-      <div>
-        <h2>메뉴 정보</h2>
-        <p>
-          <span>메뉴명</span>
-          <span>{menuData.name}</span>
-        </p>
-        <p>
-          <span>메뉴 설명</span>
-          <span>{menuData.description}</span>
-        </p>
-        <p>
-          <span>메뉴 가격</span>
-          <span>{menuData.price}</span>
-        </p>
-        <p>
-          <span>메뉴 사진</span>
+      <h1 className="my-5 text-3xl font-semibold">메뉴 등록 정보</h1>
+      <div className="p-6 rounded-md shadow-lg">
+        <h2 className="text-lg">메뉴 정보</h2>
+        <div className="my-4 border-t border-gray-200">
+          <p className="my-2">메뉴명</p>
+          <p>{menuData.name}</p>
+        </div>
+        <div className="my-4 border-t border-gray-200">
+          <p className="my-2">메뉴 설명</p>
+          <p>{menuData.description}</p>
+        </div>
+        <div className="my-4 border-t border-gray-200">
+          <p className="my-2">메뉴 가격</p>
+          <p>{menuData.price}</p>
+        </div>
+        <div className="my-4 border-t border-gray-200">
+          <p className="my-2">메뉴 사진</p>
           <img src={window.URL.createObjectURL(menuData.file[0])} alt="메뉴 이미지" />
-        </p>
+        </div>
       </div>
-      <div>
-        <h2>메뉴 옵션</h2>
+      <div className="p-6 mt-6 rounded-md shadow-lg">
+        <h2 className="mb-4 text-lg">메뉴 옵션 정보</h2>
         {!menuData?.options && <p>옵션 메뉴가 없습니다.</p>}
         {menuData?.options &&
           menuData.options.map((option, idex) => <MenuOptionItem key={`option-${idex}`} option={option} />)}
