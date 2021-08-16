@@ -61,8 +61,8 @@ const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) =>
       id,
       name,
       choices: options,
-      min,
-      max,
+      min: +min,
+      max: +max,
       isRequired: isRequired === 'true' ? true : false,
     });
     onClose();
