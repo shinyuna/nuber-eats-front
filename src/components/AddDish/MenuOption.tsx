@@ -43,7 +43,7 @@ const MenuOption = ({ tempData, saveData }: MenuOptionProps, ref: React.Ref<Menu
     const id = Date.now();
 
     setOptionGroup((prev: any) => {
-      return [...prev, Object.assign({ id: +id }, option)];
+      return [...prev, Object.assign(option, { id: +id })];
     });
   };
 
