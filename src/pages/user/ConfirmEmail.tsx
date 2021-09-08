@@ -17,6 +17,7 @@ const VERTIFY_EMAIL_MUTATAION = gql`
 export const ConfirmEmail: React.VFC = () => {
   const { data: userData, refetch } = useMe();
   const history = useHistory();
+
   const onCompleted = async (data: verifyEmail) => {
     const {
       verifyEmail: { ok },
@@ -27,11 +28,13 @@ export const ConfirmEmail: React.VFC = () => {
       history.push('/');
     }
   };
+
   const [verifyEmail] = useMutation<verifyEmail, verifyEmailVariables>(VERTIFY_EMAIL_MUTATAION, {
     onCompleted,
   });
+
   useEffect(() => {
-    const [_, code] = window.location.href.split('code=');
+    const [, code] = window.location.href.split('code=');
     verifyEmail({
       variables: {
         input: {
@@ -39,7 +42,8 @@ export const ConfirmEmail: React.VFC = () => {
         },
       },
     });
-  }, []);
+  }, [history, verifyEmail]);
+
   return (
     <div className="flex flex-col items-center justify-center mt-52">
       <HelmetTitle title={'Verify Email | Nuber Eats'} />

@@ -37,6 +37,10 @@ export const AddRestaurant: React.VFC = () => {
   const [uploading, setUploading] = useState(false);
   const [imgUrl, setImgUrl] = useState('');
 
+  const { register, getValues, formState, handleSubmit, setValue } = useForm<IFormProps>({
+    mode: 'onChange',
+  });
+
   const onCompleted = useCallback(
     (data: createRestaurant) => {
       const {
@@ -72,22 +76,13 @@ export const AddRestaurant: React.VFC = () => {
         history.push('/');
       }
     },
-    [imgUrl]
+    [getValues, history, imgUrl]
   );
 
   const [createRestaurant, { data }] = useMutation<createRestaurant, createRestaurantVariables>(
     CREATE_RESTAURANT_MUTATION,
     { onCompleted }
   );
-
-  const { register, getValues, formState, handleSubmit, setValue } = useForm<IFormProps>({
-    mode: 'onChange',
-  });
-
-  const updateFileName = useCallback(() => {
-    const { file } = getValues();
-    setValue('fileName', file[0].name);
-  }, [getValues().fileName]);
 
   const onSubmit = useCallback(async () => {
     try {
@@ -109,7 +104,12 @@ export const AddRestaurant: React.VFC = () => {
       console.log(error);
       setUploading(false);
     }
-  }, [uploading]);
+  }, [createRestaurant, getValues, userData?.me.id]);
+
+  const updateFileName = useCallback(() => {
+    const { file } = getValues();
+    setValue('fileName', file[0].name);
+  }, [getValues, setValue]);
 
   return (
     <main className="px-10 sm:px-5">

@@ -8,6 +8,7 @@ import { UserRole } from '../../api-types/globalTypes';
 import { UberLogo } from '../../components/UberLogo';
 import { FormButton } from '../../components/FormButton';
 import { HelmetTitle } from '../../components/HelmetTitle';
+import { EMAIL_REGEX } from '../../constants';
 
 const CREATACCOUNT_MUTATION = gql`
   mutation CreateAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -25,16 +26,18 @@ interface ICreateAccountForm {
 }
 
 export const CreateAccount: React.VFC = () => {
+  const history = useHistory();
+
   const { register, getValues, errors, handleSubmit, formState } = useForm<ICreateAccountForm>({
     mode: 'onChange',
     defaultValues: {
       role: UserRole.Client,
     },
   });
-  const history = useHistory();
+
   const onCompleted = (data: CreateAccountMutation) => {
     const {
-      createAccount: { ok, error },
+      createAccount: { ok },
     } = data;
     if (ok) {
       // redirect login page
@@ -42,12 +45,14 @@ export const CreateAccount: React.VFC = () => {
       history.push('/');
     }
   };
+
   const [createAccountMutation, { loading, data: createAccountMutationResult }] = useMutation<
     CreateAccountMutation,
     CreateAccountMutationVariables
   >(CREATACCOUNT_MUTATION, {
     onCompleted,
   });
+
   const onSubmit = () => {
     const { email, password, role } = getValues();
     if (!loading) {

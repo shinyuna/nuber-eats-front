@@ -6,6 +6,7 @@ import { useMe } from '../../hooks/useMe';
 import { editProfile, editProfileVariables } from '../../api-types/editProfile';
 import { client } from '../../apollo';
 import { HelmetTitle } from '../../components/HelmetTitle';
+import { EMAIL_REGEX } from '../../constants';
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile($input: EditProfileInput!) {
@@ -23,6 +24,7 @@ interface IFormProps {
 
 export const EditProfile: React.VFC = () => {
   const { data: userData } = useMe();
+
   const { register, handleSubmit, getValues, formState } = useForm<IFormProps>({
     mode: 'onChange',
     defaultValues: {
@@ -30,37 +32,43 @@ export const EditProfile: React.VFC = () => {
       password: '',
     },
   });
-  const onCompleted = useCallback((data: editProfile) => {
-    const {
-      editProfile: { ok },
-    } = data;
-    if (ok && userData) {
+
+  const onCompleted = useCallback(
+    (data: editProfile) => {
       const {
-        me: { email: prevEmail, id },
-      } = userData;
-      const { email: newEmail } = getValues();
-      if (prevEmail !== newEmail) {
-        // front에서 직접 cache를 핸들링
-        client.writeFragment({
-          id: `User:${id}`,
-          fragment: gql`
-            fragment EditUser on User {
-              verify
-              email
-            }
-          `,
-          data: {
-            email: newEmail,
-            verify: false,
-          },
-        });
+        editProfile: { ok },
+      } = data;
+      if (ok && userData) {
+        const {
+          me: { email: prevEmail, id },
+        } = userData;
+        const { email: newEmail } = getValues();
+        if (prevEmail !== newEmail) {
+          // front에서 직접 cache를 핸들링
+          client.writeFragment({
+            id: `User:${id}`,
+            fragment: gql`
+              fragment EditUser on User {
+                verify
+                email
+              }
+            `,
+            data: {
+              email: newEmail,
+              verify: false,
+            },
+          });
+        }
+        // update cache
       }
-      // update cache
-    }
-  }, []);
-  const [editProfile, { data, loading }] = useMutation<editProfile, editProfileVariables>(EDIT_PROFILE_MUTATION, {
+    },
+    [getValues, userData]
+  );
+
+  const [editProfile, { loading }] = useMutation<editProfile, editProfileVariables>(EDIT_PROFILE_MUTATION, {
     onCompleted,
   });
+
   const onSubmit = useCallback(() => {
     const { email, password } = getValues();
     editProfile({
@@ -71,7 +79,8 @@ export const EditProfile: React.VFC = () => {
         },
       },
     });
-  }, []);
+  }, [editProfile, getValues]);
+
   return (
     <div className="flex flex-col items-center justify-center px-5 mt-52">
       <HelmetTitle title={'Edit Profile | Nuber Eats'} />

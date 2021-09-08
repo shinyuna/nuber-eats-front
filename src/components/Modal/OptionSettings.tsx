@@ -28,7 +28,7 @@ export interface OptionData {
 }
 
 const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) => {
-  const [tempData, setTempData] = useState<OptionData>();
+  const [, setTempData] = useState<OptionData>();
   const [step, setStep] = useState<number>(1);
   const [optionCount, setOptionCount] = useState<number[]>([1]);
   const [error, setError] = useState<string>('');
