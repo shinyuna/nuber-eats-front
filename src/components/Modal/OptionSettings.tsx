@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faPlus, faTimes } from '@fortawesome/pro-light-svg-icons';
+import { faPlus, faTimes } from '@fortawesome/pro-light-svg-icons';
 import { useForm } from 'react-hook-form';
-import { FormError } from '../FormError';
 
 import ModalPortal from './ModalPortal';
 import ModalBackground from './ModalBackground';
+import StepFormControl from '../StepFormControl';
+import useControlStep from '../../hooks/useControlStep';
 
 interface OptionSettingsProps {
   visible: boolean;
@@ -29,23 +30,23 @@ export interface OptionData {
 
 const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) => {
   const [, setTempData] = useState<OptionData>();
-  const [step, setStep] = useState<number>(1);
   const [optionCount, setOptionCount] = useState<number[]>([1]);
-  const [error, setError] = useState<string>('');
 
+  const { currentStep, setCurrentStep, error, setError } = useControlStep();
   const { register, getValues } = useForm({ mode: 'onChange' });
 
   useEffect(() => {
-    setStep(1);
+    setCurrentStep(1);
     setOptionCount([1]);
-  }, [visible]);
+  }, [setCurrentStep, visible]);
 
   if (!visible) {
     return null;
   }
 
-  const sendData = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const sendData = () => {
     const noValues = Object.values(getValues()).filter(v => !v).length;
+
     if (noValues !== 0) {
       return setError('빈 칸을 다 채워주세요.');
     }
@@ -75,13 +76,13 @@ const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) =>
     });
   };
 
-  const stepControl = (direction: string, e: React.MouseEvent<HTMLButtonElement>) => {
+  const stepControl = (direction: string) => {
     if (direction === 'next') {
-      if (step === 3) return;
-      setStep(prev => prev + 1);
+      if (currentStep === 3) return;
+      setCurrentStep(prev => prev + 1);
     } else {
-      if (step === 1) return;
-      setStep(prev => prev - 1);
+      if (currentStep === 1) return;
+      setCurrentStep(prev => prev - 1);
     }
     saveTempData();
   };
@@ -102,13 +103,13 @@ const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) =>
   return (
     <ModalPortal>
       <ModalBackground modalSize="max-w-lg">
-        <div className="flex px-4 py-3 text-center border-b border-gray-200">
+        <div className="sticky top-0 flex px-4 py-3 text-center bg-white border-b border-gray-200">
           <FontAwesomeIcon icon={faTimes} className="text-xl text-gray-500 cursor-pointer" onClick={onClose} />
           <h1 className="flex-1">옵션그룹 추가</h1>
         </div>
         <div className="px-6 pb-4">
           {/* 그룹 명 */}
-          <div className={`w-full ${step !== 1 && 'hidden'}`}>
+          <div className={`w-full ${currentStep !== 1 && 'hidden'}`}>
             <p className="py-4 text-base">옵션그룹명</p>
             <input
               type="text"
@@ -121,7 +122,7 @@ const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) =>
               autoFocus
             />
           </div>
-          <div className={`w-full mt-4 ${step !== 2 && 'hidden'}`}>
+          <div className={`w-full mt-4 ${currentStep !== 2 && 'hidden'}`}>
             {optionCount.length > 0 &&
               optionCount.map(id => (
                 <div key={id} className="mt-2">
@@ -159,7 +160,7 @@ const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) =>
               <FontAwesomeIcon icon={faPlus} className="mr-1" /> 옵션 추가
             </button>
           </div>
-          <div className={`w-full ${step !== 3 && 'hidden'}`}>
+          <div className={`w-full ${currentStep !== 3 && 'hidden'}`}>
             <h2 className="pb-2 mt-4 text-lg border-b border-gray-200">선택 가능한 옵션 수</h2>
             <p className="py-4 text-base">필수 여부</p>
             <div className="grid grid-cols-1 gap-4">
@@ -203,25 +204,15 @@ const OptionSettings = ({ visible, onClose, addOption }: OptionSettingsProps) =>
             </p>
           </div>
           {/* 버튼 */}
-          <div className="mt-4 text-right">
-            {error && <FormError errMsg={error} />}
-            {step !== 1 && (
-              <button className="p-4 text-lime-500" onClick={e => stepControl('prev', e)}>
-                <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
-                이전
-              </button>
-            )}
-            {step !== 3 && (
-              <button className="ml-4 button" onClick={e => stepControl('next', e)}>
-                디음
-              </button>
-            )}
-            {step === 3 && (
-              <button className="ml-4 button" onClick={sendData}>
-                추가
-              </button>
-            )}
-          </div>
+          <StepFormControl
+            step={currentStep}
+            lastStep={3}
+            error={error}
+            actionTitle="추가"
+            prevStep={() => stepControl('prev')}
+            nextStep={() => stepControl('next')}
+            onAction={sendData}
+          />
         </div>
       </ModalBackground>
     </ModalPortal>

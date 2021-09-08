@@ -4,16 +4,14 @@ import { gql, useMutation } from '@apollo/client';
 import { createDish, createDishVariables } from '../../api-types/createDish';
 import { MY_RESTAURANT_QUERY } from './MyRestaurant';
 import { HelmetTitle } from '../../components/HelmetTitle';
-import { FormButton } from '../../components/FormButton';
-import { FormError } from '../../components/FormError';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/pro-light-svg-icons';
 import { useMe } from '../../hooks/useMe';
 import { s3ImageUpload } from '../../utils';
 import { OptionData } from '../../components/Modal/OptionSettings';
 import MenuInfo, { MenuInfoRef } from '../../components/AddDish/MenuInfo';
 import MenuOption, { MenuOptionRef } from '../../components/AddDish/MenuOption';
 import MenuCheck from '../../components/AddDish/MenuCheck';
+import StepFormControl from '../../components/StepFormControl';
+import useControlStep from '../../hooks/useControlStep';
 
 const CREATE_DISH_MUTATION = gql`
   mutation createDish($input: CreateDishInput!) {
@@ -47,11 +45,9 @@ export const AddDish = () => {
 
   const { data: userData } = useMe();
   const { restaurantId } = useParams<IParams>();
+  const { currentStep, setCurrentStep, error, setError } = useControlStep();
 
   const [menuData, setMenuData] = useState<MenuData>();
-  console.log('🚀 ~ AddDish ~ menuData', menuData);
-  const [currStep, setCurrStep] = useState<number>(1);
-  const [error, setError] = useState<string>('');
 
   const [createDish, { data, loading }] = useMutation<createDish, createDishVariables>(CREATE_DISH_MUTATION, {
     refetchQueries: [
@@ -75,7 +71,7 @@ export const AddDish = () => {
   };
 
   const nextStep = () => {
-    if (currStep >= 3) {
+    if (currentStep >= 3) {
       return;
     }
     const message = childRef.current?.sendData();
@@ -83,14 +79,15 @@ export const AddDish = () => {
       return setError(message);
     }
     setError('');
-    setCurrStep(prev => prev + 1);
+    setCurrentStep(prev => prev + 1);
   };
+
   const prevStep = () => {
-    if (currStep === 1) {
+    if (currentStep === 1) {
       return;
     }
     childRef.current?.sendData();
-    setCurrStep(prev => prev - 1);
+    setCurrentStep(prev => prev - 1);
   };
 
   const onSubmit = useCallback(async () => {
@@ -100,10 +97,12 @@ export const AddDish = () => {
         userData?.me.id + '',
         `${restaurantId}_dish_${menuData?.name}_img`
       );
+
       const options = menuData?.options.map(option => {
         const { id, ...rest } = option;
         return rest;
       });
+
       createDish({
         variables: {
           input: {
@@ -123,29 +122,21 @@ export const AddDish = () => {
   }, [createDish, history, menuData, restaurantId, userData?.me.id]);
 
   return (
-    <main className="max-w-3xl px-10 m-auto sm:px-5">
+    <main className="max-w-3xl px-10 m-auto mb-10 sm:px-5">
       <HelmetTitle title={'Create Dish | Nuber Eats'} />
-      {currStep === 1 && <MenuInfo ref={childRef} tempData={menuData} saveData={saveData} />}
-      {currStep === 2 && <MenuOption ref={childRef} saveData={saveData} tempData={menuData} />}
-      {currStep === 3 && <MenuCheck menuData={menuData!} />}
-
-      <div className="mt-10 text-right">
-        {data?.createDish.error || (error && <FormError errMsg={data?.createDish.error || error} />)}
-        {currStep > 1 && (
-          <button className="p-4 mr-4 text-lime-500" onClick={prevStep}>
-            <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
-            이전
-          </button>
-        )}
-        {currStep < 3 && (
-          <button className="button" onClick={nextStep}>
-            다음
-          </button>
-        )}
-        {currStep === 3 && (
-          <FormButton actionText={'메뉴 등록'} isLoading={loading} isValid={true} onClick={onSubmit} />
-        )}
-      </div>
+      {currentStep === 1 && <MenuInfo ref={childRef} tempData={menuData} saveData={saveData} />}
+      {currentStep === 2 && <MenuOption ref={childRef} saveData={saveData} tempData={menuData} />}
+      {currentStep === 3 && <MenuCheck menuData={menuData!} />}
+      <StepFormControl
+        step={currentStep}
+        lastStep={3}
+        error={data?.createDish.error || error}
+        loading={loading}
+        actionTitle="메뉴 등록"
+        prevStep={prevStep}
+        nextStep={nextStep}
+        onAction={onSubmit}
+      />
     </main>
   );
 };
