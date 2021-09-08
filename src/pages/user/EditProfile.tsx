@@ -79,7 +79,7 @@ export const EditProfile: React.VFC = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="grid w-full gap-2 mt-4 lg:w-4/12 md:w-4/6">
         <input
           ref={register({
-            pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            pattern: EMAIL_REGEX,
           })}
           name="email"
           type="email"
