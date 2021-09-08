@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Feed } from '../pages/client/Feed';
 import { Header } from '../components/Header';
 import { useMe } from '../hooks/useMe';
@@ -60,7 +60,7 @@ export const LoggedInRouter = () => {
               {route.component}
             </Route>
           ))}
-          <Route>
+          <Route path="*">
             <NotFound />
           </Route>
         </Switch>
